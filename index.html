@@ -50,7 +50,7 @@
         <div class="flex items-center gap-2">
           <h1 class="font-display font-bold text-base sm:text-lg tracking-tight text-white">Guess Omar's SAT</h1>
           <span id="syncStatusBadge" class="inline-flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-300 border border-emerald-500/30">
-            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> Live Sync
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> Firebase Live Sync
           </span>
         </div>
         <p class="text-[11px] text-slate-400">Official Prediction Pool • 1 Guess Per Person</p>
@@ -66,14 +66,14 @@
 
   <main class="max-w-5xl mx-auto px-4 pt-4 space-y-5">
 
-    <!-- COMPACT MOBILE-FRIENDLY BANNER: A2rab Guess Leh Gayza Meny -->
+    <!-- COMPACT MOBILE-FRIENDLY BANNER -->
     <div class="rounded-xl py-3 px-4 bg-gradient-to-r from-amber-500/20 via-fuchsia-500/20 to-sky-500/20 border border-amber-400/30 shadow-md text-center">
       <h2 class="font-display text-lg sm:text-xl font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-white to-sky-300">
         A2rab Guess Leh Gayza Meny
       </h2>
     </div>
 
-    <!-- Official Score Reveal Banner (Hidden until Omar reveals it) -->
+    <!-- Official Score Reveal Banner -->
     <div id="officialRevealBanner" class="hidden rounded-2xl p-5 bg-gradient-to-r from-emerald-500/20 via-amber-500/20 to-sky-500/20 border border-amber-400/50 shadow-xl">
       <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
         <div>
@@ -91,7 +91,7 @@
       </div>
     </div>
 
-    <!-- Owner Controls Bar (Only visible after unlocking with secret PIN) -->
+    <!-- Owner Controls Bar -->
     <div id="adminPanel" class="hidden rounded-2xl p-4 bg-slate-900/90 border border-sky-500/40 shadow-lg space-y-4">
       <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-800 pb-3">
         <div class="flex items-center gap-2">
@@ -130,10 +130,10 @@
     <!-- Top Grid: Score Picker + Live Stats -->
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
 
-      <!-- Left: Interactive Score Picker OR Locked-In State (7 cols) -->
+      <!-- Left: Score Picker OR Locked-In State (7 cols) -->
       <section class="lg:col-span-7 rounded-2xl bg-slate-900/70 border border-slate-800 p-5 shadow-xl">
 
-        <!-- STATE A: Friend already submitted a prediction on this device -->
+        <!-- Locked-In State -->
         <div id="lockedUserCard" class="hidden py-6 px-3 text-center space-y-4">
           <div class="space-y-1">
             <span class="text-xs font-bold uppercase tracking-wider text-emerald-400">1 Prediction Per Person</span>
@@ -152,7 +152,7 @@
           </button>
         </div>
 
-        <!-- STATE B: Score Picker Form -->
+        <!-- Score Picker Form -->
         <div id="pickerFormContainer" class="space-y-5">
           <div class="flex items-center justify-between gap-2">
             <div>
@@ -164,7 +164,7 @@
             </div>
           </div>
 
-          <!-- Big Animated Total Display -->
+          <!-- Total Display -->
           <div class="rounded-2xl bg-slate-950/90 border border-slate-800/90 p-4 text-center relative overflow-hidden">
             <div class="text-[11px] uppercase tracking-widest text-slate-400 font-semibold">Predicted Total Score</div>
             <div id="totalScoreDisplay" class="font-display text-5xl sm:text-6xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-sky-400 via-indigo-400 to-purple-400 my-1">
@@ -175,7 +175,6 @@
 
           <!-- Sliders -->
           <div class="space-y-4">
-            <!-- Reading & Writing -->
             <div class="p-3.5 rounded-xl bg-slate-950/50 border border-slate-800/80 space-y-2.5">
               <div class="flex items-center justify-between">
                 <span class="text-xs sm:text-sm font-semibold text-slate-200">Reading & Writing</span>
@@ -193,7 +192,6 @@
               </div>
             </div>
 
-            <!-- Math -->
             <div class="p-3.5 rounded-xl bg-slate-950/50 border border-slate-800/80 space-y-2.5">
               <div class="flex items-center justify-between">
                 <span class="text-xs sm:text-sm font-semibold text-slate-200">Math</span>
@@ -244,14 +242,12 @@
             <span id="totalGuessesCount" class="text-xs font-semibold px-2.5 py-1 rounded-full bg-slate-800 text-slate-300">0 Guesses</span>
           </div>
 
-          <!-- Average Score Box -->
           <div class="p-4 rounded-xl bg-slate-950/80 border border-slate-800/80 text-center">
             <div class="text-[11px] text-slate-400 uppercase font-semibold">Community Average</div>
             <div id="avgTotalDisplay" class="font-display text-3xl sm:text-4xl font-extrabold text-white mt-1">—</div>
             <div id="avgSubDisplay" class="text-xs text-slate-400 mt-1">R&W: — • Math: —</div>
           </div>
 
-          <!-- Faith Meter -->
           <div class="space-y-1.5">
             <div class="flex justify-between text-xs font-semibold">
               <span class="text-slate-400">Squad Faith Meter</span>
@@ -262,7 +258,6 @@
             </div>
           </div>
 
-          <!-- Biggest Guess & Smallest Guess -->
           <div class="grid grid-cols-2 gap-3 pt-1">
             <div class="p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/25">
               <div class="text-[11px] font-bold uppercase text-emerald-400">Biggest Guess</div>
@@ -284,7 +279,7 @@
       <div class="flex items-center justify-between gap-2">
         <div>
           <h2 class="font-display text-lg sm:text-xl font-bold text-white">Friends' Predictions Board</h2>
-          <p class="text-xs text-slate-400">Synced globally across all devices</p>
+          <p class="text-xs text-slate-400">Synced globally across all devices via Firebase</p>
         </div>
         <button onclick="openPinModal('clear')" class="text-xs font-semibold px-3 py-1.5 rounded-lg bg-slate-800/80 hover:bg-slate-800 text-slate-400 hover:text-slate-200 border border-slate-700/70 transition">
           Reset Board
@@ -297,7 +292,7 @@
     </section>
   </main>
 
-  <!-- Secret PIN Modal (Zero mention of the actual code) -->
+  <!-- Secret PIN Modal -->
   <div id="pinModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
     <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-sm w-full p-6 shadow-2xl space-y-4">
       <div class="flex items-center justify-between">
@@ -316,10 +311,24 @@
     </div>
   </div>
 
-  <script>
-    // ============================================================================
-    // STEALTH PIN VERIFICATION (Hashed so nobody can read your PIN in View Source)
-    // ============================================================================
+  <!-- Firebase Integration & App Logic -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-app.js";
+    import { getFirestore, doc, setDoc, onSnapshot, getDoc } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCit-Si1mOhCPDZYbBouoATMGsdglPaLXw",
+      authDomain: "omar-sat.firebaseapp.com",
+      projectId: "omar-sat",
+      storageBucket: "omar-sat.firebasestorage.app",
+      messagingSenderId: "1096084570863",
+      appId: "1:1096084570863:web:37a820fd2cf7840471511a"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const docRef = doc(db, "sat_pool", "global_predictions_data");
+
     function verifySecretPin(input) {
       const clean = (input || "").trim();
       let hash = 0;
@@ -328,14 +337,11 @@
       }
       return hash === 1512326;
     }
+    window.verifySecretPin = verifySecretPin;
 
-    // ============================================================================
-    // GLOBAL CLOUD SYNC + LOCAL FALLBACK (Works on GitHub Pages across all phones)
-    // ============================================================================
-    const CLOUD_API_URL = "https://kvdb.io/A6Xy9mPq7VzL2wK4nJ8rBt/omarikoz_sat_pool_2026";
-    const STORAGE_KEY = "omar_sat_predictions_v3";
-    const OFFICIAL_KEY = "omar_sat_official_v3";
-    const MY_DEVICE_ID_KEY = "omar_sat_device_token_v3";
+    const STORAGE_KEY = "omar_sat_predictions_v6";
+    const OFFICIAL_KEY = "omar_sat_official_v6";
+    const MY_DEVICE_ID_KEY = "omar_sat_device_token_v6";
 
     let deviceToken = localStorage.getItem(MY_DEVICE_ID_KEY);
     if (!deviceToken) {
@@ -343,48 +349,41 @@
       localStorage.setItem(MY_DEVICE_ID_KEY, deviceToken);
     }
 
-    let predictions = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
-    let officialScore = JSON.parse(localStorage.getItem(OFFICIAL_KEY) || "null");
-    let isAdminUnlocked = false;
-    let pendingPinAction = null;
-    let pendingDeleteId = null;
+    window.predictions = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+    window.officialScore = JSON.parse(localStorage.getItem(OFFICIAL_KEY) || "null");
+    window.isAdminUnlocked = false;
+    window.pendingPinAction = null;
+    window.pendingDeleteId = null;
 
-    async function fetchCloudState() {
-      try {
-        const res = await fetch(CLOUD_API_URL, { cache: "no-store" });
-        if (res.ok) {
-          const data = await res.json();
-          if (data && Array.isArray(data.predictions)) {
-            predictions = data.predictions;
-            officialScore = data.officialScore || null;
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(predictions));
-            localStorage.setItem(OFFICIAL_KEY, JSON.stringify(officialScore));
-            renderBoard();
-          }
+    // Real-time listener across all devices via Firebase Firestore
+    onSnapshot(docRef, (docSnap) => {
+      if (docSnap.exists()) {
+        const data = docSnap.data();
+        if (data && Array.isArray(data.predictions)) {
+          window.predictions = data.predictions;
+          window.officialScore = data.officialScore || null;
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(window.predictions));
+          localStorage.setItem(OFFICIAL_KEY, JSON.stringify(window.officialScore));
+          window.renderBoard();
         }
-      } catch (err) {
-        // Fallback silently to local cache if offline
       }
-    }
+    });
 
-    async function pushCloudState() {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(predictions));
-      localStorage.setItem(OFFICIAL_KEY, JSON.stringify(officialScore));
-      renderBoard();
+    window.pushCloudState = async function() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(window.predictions));
+      localStorage.setItem(OFFICIAL_KEY, JSON.stringify(window.officialScore));
+      window.renderBoard();
+
       try {
-        await fetch(CLOUD_API_URL, {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            predictions,
-            officialScore,
-            updatedAt: Date.now()
-          })
+        await setDoc(docRef, {
+          predictions: window.predictions,
+          officialScore: window.officialScore,
+          updatedAt: Date.now()
         });
       } catch (err) {
-        // Kept in localStorage if network fails
+        console.error("Firebase save error:", err);
       }
-    }
+    };
 
     function getHypeTier(total) {
       if (total < 1050) {
@@ -400,7 +399,7 @@
       }
     }
 
-    function updateSliders() {
+    window.updateSliders = function() {
       const rw = parseInt(document.getElementById("rwSlider").value, 10);
       const math = parseInt(document.getElementById("mathSlider").value, 10);
       const total = rw + math;
@@ -414,28 +413,28 @@
       badge.textContent = tier.label;
       badge.className = `text-[11px] font-bold px-2.5 py-1 rounded-full border whitespace-nowrap ${tier.badgeClass}`;
       document.getElementById("hypeDescription").textContent = tier.desc;
-    }
+    };
 
-    function adjustScore(section, delta) {
+    window.adjustScore = function(section, delta) {
       const sliderId = section === "rw" ? "rwSlider" : "mathSlider";
       const slider = document.getElementById(sliderId);
       let nextVal = parseInt(slider.value, 10) + delta;
       nextVal = Math.max(200, Math.min(800, nextVal));
       slider.value = nextVal;
-      updateSliders();
-    }
+      window.updateSliders();
+    };
 
     function getMyExistingPrediction() {
-      return predictions.find(p => p.deviceToken === deviceToken) || null;
+      return window.predictions.find(p => p.deviceToken === deviceToken) || null;
     }
 
-    async function submitPrediction(e) {
+    window.submitPrediction = async function(e) {
       e.preventDefault();
       const dupErr = document.getElementById("duplicateNameError");
       dupErr.classList.add("hidden");
 
       if (getMyExistingPrediction()) {
-        renderBoard();
+        window.renderBoard();
         return;
       }
 
@@ -446,7 +445,7 @@
 
       if (!name) return;
 
-      const nameExists = predictions.some(p => p.name.toLowerCase() === name.toLowerCase());
+      const nameExists = window.predictions.some(p => p.name.toLowerCase() === name.toLowerCase());
       if (nameExists) {
         dupErr.classList.remove("hidden");
         return;
@@ -467,7 +466,7 @@
         timestamp: new Date().toLocaleDateString("en-US", { month: "short", day: "numeric" })
       };
 
-      predictions.unshift(entry);
+      window.predictions.unshift(entry);
       nameInput.value = "";
       noteInput.value = "";
 
@@ -475,17 +474,17 @@
         confetti({ particleCount: 75, spread: 65, origin: { y: 0.7 } });
       }
 
-      await pushCloudState();
-    }
+      await window.pushCloudState();
+    };
 
-    async function deleteMyOwnPrediction() {
+    window.deleteMyOwnPrediction = async function() {
       const mine = getMyExistingPrediction();
       if (!mine) return;
-      predictions = predictions.filter(p => p.id !== mine.id);
-      await pushCloudState();
-    }
+      window.predictions = window.predictions.filter(p => p.id !== mine.id);
+      await window.pushCloudState();
+    };
 
-    function renderBoard() {
+    window.renderBoard = function() {
       const countEl = document.getElementById("totalGuessesCount");
       const avgTotalEl = document.getElementById("avgTotalDisplay");
       const avgSubEl = document.getElementById("avgSubDisplay");
@@ -497,7 +496,6 @@
       const haterScore = document.getElementById("haterScore");
       const listEl = document.getElementById("predictionsList");
 
-      // Check 1-prediction-per-person lock state
       const myGuess = getMyExistingPrediction();
       const lockedCard = document.getElementById("lockedUserCard");
       const pickerForm = document.getElementById("pickerFormContainer");
@@ -513,19 +511,18 @@
         pickerForm.classList.remove("hidden");
       }
 
-      // Official score banner
       const banner = document.getElementById("officialRevealBanner");
-      if (officialScore) {
+      if (window.officialScore) {
         banner.classList.remove("hidden");
-        document.getElementById("officialTotalDisplay").textContent = officialScore.total;
-        document.getElementById("officialBreakdownDisplay").textContent = `R&W: ${officialScore.rw} • Math: ${officialScore.math}`;
+        document.getElementById("officialTotalDisplay").textContent = window.officialScore.total;
+        document.getElementById("officialBreakdownDisplay").textContent = `R&W: ${window.officialScore.rw} • Math: ${window.officialScore.math}`;
       } else {
         banner.classList.add("hidden");
       }
 
-      countEl.textContent = `${predictions.length} ${predictions.length === 1 ? "Guess" : "Guesses"}`;
+      countEl.textContent = `${window.predictions.length} ${window.predictions.length === 1 ? "Guess" : "Guesses"}`;
 
-      if (predictions.length === 0) {
+      if (window.predictions.length === 0) {
         avgTotalEl.textContent = "—";
         avgSubEl.textContent = "R&W: — • Math: —";
         faithLabel.textContent = "0%";
@@ -542,13 +539,13 @@
         return;
       }
 
-      const sumTotal = predictions.reduce((acc, p) => acc + p.total, 0);
-      const sumRW = predictions.reduce((acc, p) => acc + p.rw, 0);
-      const sumMath = predictions.reduce((acc, p) => acc + p.math, 0);
+      const sumTotal = window.predictions.reduce((acc, p) => acc + p.total, 0);
+      const sumRW = window.predictions.reduce((acc, p) => acc + p.rw, 0);
+      const sumMath = window.predictions.reduce((acc, p) => acc + p.math, 0);
 
-      const avgTotal = Math.round(sumTotal / predictions.length / 10) * 10;
-      const avgRW = Math.round(sumRW / predictions.length / 10) * 10;
-      const avgMath = Math.round(sumMath / predictions.length / 10) * 10;
+      const avgTotal = Math.round(sumTotal / window.predictions.length / 10) * 10;
+      const avgRW = Math.round(sumRW / window.predictions.length / 10) * 10;
+      const avgMath = Math.round(sumMath / window.predictions.length / 10) * 10;
 
       avgTotalEl.textContent = avgTotal;
       avgSubEl.textContent = `R&W: ${avgRW} • Math: ${avgMath}`;
@@ -557,7 +554,7 @@
       faithLabel.textContent = `${faithPct}%`;
       faithBar.style.width = `${faithPct}%`;
 
-      const sortedByScore = [...predictions].sort((a, b) => b.total - a.total);
+      const sortedByScore = [...window.predictions].sort((a, b) => b.total - a.total);
       const highest = sortedByScore[0];
       const lowest = sortedByScore[sortedByScore.length - 1];
 
@@ -566,15 +563,15 @@
       haterName.textContent = lowest.name;
       haterScore.textContent = lowest.total;
 
-      let displayList = [...predictions];
-      if (officialScore) {
-        displayList.sort((a, b) => Math.abs(a.total - officialScore.total) - Math.abs(b.total - officialScore.total));
+      let displayList = [...window.predictions];
+      if (window.officialScore) {
+        displayList.sort((a, b) => Math.abs(a.total - window.officialScore.total) - Math.abs(b.total - window.officialScore.total));
       }
 
       listEl.innerHTML = displayList.map((item, idx) => {
         const tier = getHypeTier(item.total);
-        const diff = officialScore ? Math.abs(item.total - officialScore.total) : null;
-        const isWinner = officialScore && idx === 0;
+        const diff = window.officialScore ? Math.abs(item.total - window.officialScore.total) : null;
+        const isWinner = window.officialScore && idx === 0;
         const isMine = item.deviceToken === deviceToken;
 
         return `
@@ -599,11 +596,11 @@
               </div>
               <div class="font-display text-xl sm:text-2xl font-extrabold text-white">${item.total}</div>
               ${isMine ? `
-                <button onclick="deleteMyOwnPrediction()" title="Delete my guess & try again" class="text-xs px-2.5 py-1 rounded-lg bg-rose-500/20 text-rose-300 hover:bg-rose-500/30 border border-rose-500/30 font-semibold">
+                <button onclick="deleteMyOwnPrediction()" class="text-xs px-2.5 py-1 rounded-lg bg-rose-500/20 text-rose-300 hover:bg-rose-500/30 border border-rose-500/30 font-semibold">
                   Change
                 </button>
               ` : `
-                <button onclick="requestAdminDeleteSingle('${item.id}')" title="Owner Delete" class="text-xs px-2.5 py-1 rounded-lg bg-slate-800/80 text-slate-400 hover:text-rose-300 hover:bg-rose-500/20 transition font-semibold">
+                <button onclick="requestAdminDeleteSingle('${item.id}')" class="text-xs px-2.5 py-1 rounded-lg bg-slate-800/80 text-slate-400 hover:text-rose-300 hover:bg-rose-500/20 transition font-semibold">
                   Delete
                 </button>
               `}
@@ -611,94 +608,94 @@
           </div>
         `;
       }).join("");
-    }
+    };
 
-    function requestAdminDeleteSingle(id) {
-      if (isAdminUnlocked) {
-        deleteSinglePrediction(id);
+    window.requestAdminDeleteSingle = function(id) {
+      if (window.isAdminUnlocked) {
+        window.deleteSinglePrediction(id);
       } else {
-        pendingDeleteId = id;
-        openPinModal("deleteSingle");
+        window.pendingDeleteId = id;
+        window.openPinModal("deleteSingle");
       }
-    }
+    };
 
-    function openPinModal(actionType) {
-      if (isAdminUnlocked) {
+    window.openPinModal = function(actionType) {
+      if (window.isAdminUnlocked) {
         if (actionType === "clear") {
-          clearAllPredictions();
+          window.clearAllPredictions();
         } else {
           document.getElementById("adminPanel").classList.remove("hidden");
         }
         return;
       }
-      pendingPinAction = actionType;
+      window.pendingPinAction = actionType;
       document.getElementById("pinInput").value = "";
       document.getElementById("pinError").classList.add("hidden");
       const modal = document.getElementById("pinModal");
       modal.classList.remove("hidden");
       modal.classList.add("flex");
       setTimeout(() => document.getElementById("pinInput").focus(), 50);
-    }
+    };
 
-    function closePinModal() {
+    window.closePinModal = function() {
       const modal = document.getElementById("pinModal");
       modal.classList.add("hidden");
       modal.classList.remove("flex");
-    }
+    };
 
-    async function handlePinSubmit(e) {
+    window.handlePinSubmit = async function(e) {
       e.preventDefault();
       const val = document.getElementById("pinInput").value;
       if (verifySecretPin(val)) {
-        isAdminUnlocked = true;
-        closePinModal();
+        window.isAdminUnlocked = true;
+        window.closePinModal();
         document.getElementById("adminPanel").classList.remove("hidden");
-        if (pendingPinAction === "clear") {
-          await clearAllPredictions();
-        } else if (pendingPinAction === "deleteSingle" && pendingDeleteId) {
-          await deleteSinglePrediction(pendingDeleteId);
-          pendingDeleteId = null;
+        if (window.pendingPinAction === "clear") {
+          await window.clearAllPredictions();
+        } else if (window.pendingPinAction === "deleteSingle" && window.pendingDeleteId) {
+          await window.deleteSinglePrediction(window.pendingDeleteId);
+          window.pendingDeleteId = null;
         }
-        renderBoard();
+        window.renderBoard();
       } else {
         document.getElementById("pinError").classList.remove("hidden");
       }
-    }
+    };
 
-    function lockAdmin() {
-      isAdminUnlocked = false;
+    window.lockAdmin = function() {
+      window.isAdminUnlocked = false;
       document.getElementById("adminPanel").classList.add("hidden");
-      renderBoard();
-    }
+      window.renderBoard();
+    };
 
-    async function clearAllPredictions() {
-      if (!isAdminUnlocked) return;
-      predictions = [];
-      await pushCloudState();
-    }
+    window.clearAllPredictions = async function() {
+      if (!window.isAdminUnlocked) return;
+      window.predictions = [];
+      await window.pushCloudState();
+    };
 
-    async function deleteSinglePrediction(id) {
-      if (!isAdminUnlocked) return;
-      predictions = predictions.filter(p => p.id !== id);
-      await pushCloudState();
-    }
+    window.deleteSinglePrediction = async function(id) {
+      if (!window.isAdminUnlocked) return;
+      window.predictions = window.predictions.filter(p => p.id !== id);
+      await window.pushCloudState();
+    };
 
-    async function publishOfficialScore() {
-      if (!isAdminUnlocked) return;
+    window.publishOfficialScore = async function() {
+      if (!window.isAdminUnlocked) return;
       const rw = Math.max(200, Math.min(800, parseInt(document.getElementById("officialRWInput").value, 10) || 700));
       const math = Math.max(200, Math.min(800, parseInt(document.getElementById("officialMathInput").value, 10) || 700));
-      officialScore = { rw, math, total: rw + math };
+      window.officialScore = { rw, math, total: rw + math };
       if (typeof confetti === "function") {
         confetti({ particleCount: 120, spread: 80, origin: { y: 0.6 } });
       }
-      await pushCloudState();
-    }
+      await window.pushCloudState();
+    };
 
-    async function hideOfficialScore() {
-      if (!isAdminUnlocked) return;
-      officialScore = null;
-      await pushCloudState();
-    }
+    window.hideOfficialScore = async function() {
+      if (!window.isAdminUnlocked) return;
+      window.officialScore = null;
+      await window.pushCloudState();
+    };
 
     function escapeHtml(str) {
       return String(str).replace(/[&<>"']/g, s => ({
@@ -706,10 +703,8 @@
       }[s]));
     }
 
-    updateSliders();
-    renderBoard();
-    fetchCloudState();
-    setInterval(fetchCloudState, 5000);
+    window.updateSliders();
+    window.renderBoard();
   </script>
 </body>
 </html>
