@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Guess Omar's SAT Score!</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #090d16;
+      color: #f8fafc;
+    }
+    .font-display {
+      font-family: 'Space Grotesk', sans-serif;
+    }
+    input[type="range"] {
+      -webkit-appearance: none;
+      appearance: none;
+      height: 10px;
+      border-radius: 999px;
+      background: #1e293b;
+      outline: none;
+    }
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: #38bdf8;
+      cursor: pointer;
+      border: 3px solid #0f172a;
+      box-shadow: 0 0 12px rgba(56, 189, 248, 0.7);
+      transition: transform 0.15s ease;
+    }
+    input[type="range"]::-webkit-slider-thumb:hover {
+      transform: scale(1.15);
+    }
+  </style>
+</head>
+<body class="min-h-screen bg-gradient-to-b from-[#090d16] via-[#0f172a] to-[#090d16] text-slate-100 pb-16">
+
+  <!-- Top Navbar -->
+  <header class="border-b border-slate-800/80 bg-slate-900/60 backdrop-blur-md sticky top-0 z-30">
+    <div class="max-w-5xl mx-auto px-4 py-3.5 flex items-center justify-between">
+      <div class="flex items-center gap-2.5">
+        <span class="text-2xl">🎯</span>
+        <div>
+          <h1 class="font-display font-bold text-lg sm:text-xl tracking-tight text-white">Guess Omar's SAT</h1>
+          <p class="text-xs text-slate-400">Official Prediction Pool • Lock in your guess before scores drop</p>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <button id="adminToggleBtn" onclick="openPinModal('admin')" class="text-xs font-semibold px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition">
+          🔒 Owner Lock
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-5xl mx-auto px-4 pt-6 space-y-8">
+
+    <!-- Official Score Reveal Banner (Hidden until Omar reveals it) -->
+    <div id="officialRevealBanner" class="hidden rounded-2xl p-6 bg-gradient-to-r from-amber-500/20 via-purple-500/20 to-sky-500/20 border border-amber-400/40 shadow-xl">
+      <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div>
+          <span class="inline-block text-xs font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-amber-400/20 text-amber-300 border border-amber-400/30 mb-2">
+            🚨 Official Score Released
+          </span>
+          <h2 class="font-display text-2xl sm:text-3xl font-bold text-white">Omar's Official SAT Score is In!</h2>
+          <p class="text-sm text-slate-300 mt-1">The leaderboard below is now ranked by who guessed the closest.</p>
+        </div>
+        <div class="text-center bg-slate-950/80 px-6 py-4 rounded-xl border border-amber-400/40 min-w-[180px]">
+          <div class="text-xs text-slate-400 uppercase font-semibold">Official Total</div>
+          <div id="officialTotalDisplay" class="font-display text-4xl font-extrabold text-amber-400 mt-0.5">1500</div>
+          <div id="officialBreakdownDisplay" class="text-xs text-slate-400 mt-1">R&W: 740 • Math: 760</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Owner Controls Bar (Only visible after unlocking with secret PIN) -->
+    <div id="adminPanel" class="hidden rounded-2xl p-5 bg-slate-900/90 border border-sky-500/40 shadow-lg space-y-4">
+      <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-800 pb-3">
+        <div class="flex items-center gap-2">
+          <span class="text-lg">👑</span>
+          <h3 class="font-display font-bold text-white">Omar's Control Panel (Unlocked)</h3>
+        </div>
+        <div class="flex items-center gap-2">
+          <button onclick="clearAllPredictions()" class="text-xs font-bold px-3 py-1.5 rounded-lg bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 border border-rose-500/40 transition">
+            🗑️ Clear All Predictions
+          </button>
+          <button onclick="lockAdmin()" class="text-xs font-semibold px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300">
+            Lock Panel
+          </button>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 items-end">
+        <div>
+          <label class="block text-xs text-slate-400 mb-1">Official Reading & Writing (200-800)</label>
+          <input id="officialRWInput" type="number" min="200" max="800" step="10" value="750" class="w-full px-3 py-2 rounded-lg bg-slate-950 border border-slate-700 text-white text-sm" />
+        </div>
+        <div>
+          <label class="block text-xs text-slate-400 mb-1">Official Math (200-800)</label>
+          <input id="officialMathInput" type="number" min="200" max="800" step="10" value="780" class="w-full px-3 py-2 rounded-lg bg-slate-950 border border-slate-700 text-white text-sm" />
+        </div>
+        <div class="flex gap-2">
+          <button onclick="publishOfficialScore()" class="flex-1 py-2 px-3 rounded-lg bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs transition">
+            🏆 Reveal Official Score
+          </button>
+          <button onclick="hideOfficialScore()" class="py-2 px-3 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold text-xs transition">
+            Hide
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Top Grid: Score Picker + Live Stats -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+      <!-- Left: Interactive Score Picker (7 cols) -->
+      <section class="lg:col-span-7 rounded-2xl bg-slate-900/70 border border-slate-800 p-6 shadow-xl space-y-6">
+        <div class="flex items-center justify-between">
+          <div>
+            <h2 class="font-display text-xl font-bold text-white">Lock In Your Prediction</h2>
+            <p class="text-xs text-slate-400">Slide Reading & Writing and Math to set your guess</p>
+          </div>
+          <div id="hypeBadge" class="text-xs font-bold px-3 py-1.5 rounded-full bg-sky-500/20 text-sky-300 border border-sky-500/30">
+            🤝 Solid Believer
+          </div>
+        </div>
+
+        <!-- Big Animated Total Display -->
+        <div class="rounded-2xl bg-slate-950/90 border border-slate-800/90 p-5 text-center relative overflow-hidden">
+          <div class="text-xs uppercase tracking-widest text-slate-400 font-semibold">Predicted Total Score</div>
+          <div id="totalScoreDisplay" class="font-display text-6xl sm:text-7xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-sky-400 via-indigo-400 to-purple-400 my-1">
+            1350
+          </div>
+          <div id="hypeDescription" class="text-xs text-slate-400">Respectable score—you got faith in Omar!</div>
+        </div>
+
+        <!-- Sliders -->
+        <div class="space-y-5">
+          <!-- Reading & Writing -->
+          <div class="p-4 rounded-xl bg-slate-950/50 border border-slate-800/80 space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="text-sm font-semibold text-slate-200">📖 Reading & Writing</span>
+              <div class="flex items-center gap-1.5">
+                <button type="button" onclick="adjustScore('rw', -10)" class="w-7 h-7 rounded-md bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-sm">-10</button>
+                <span id="rwValueDisplay" class="font-display font-bold text-xl text-sky-400 w-12 text-center">670</span>
+                <button type="button" onclick="adjustScore('rw', 10)" class="w-7 h-7 rounded-md bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-sm">+10</button>
+              </div>
+            </div>
+            <input id="rwSlider" type="range" min="200" max="800" step="10" value="670" oninput="updateSliders()" class="w-full" />
+            <div class="flex justify-between text-[11px] text-slate-500">
+              <span>200</span>
+              <span>500</span>
+              <span>800</span>
+            </div>
+          </div>
+
+          <!-- Math -->
+          <div class="p-4 rounded-xl bg-slate-950/50 border border-slate-800/80 space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="text-sm font-semibold text-slate-200">📐 Math</span>
+              <div class="flex items-center gap-1.5">
+                <button type="button" onclick="adjustScore('math', -10)" class="w-7 h-7 rounded-md bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-sm">-10</button>
+                <span id="mathValueDisplay" class="font-display font-bold text-xl text-indigo-400 w-12 text-center">680</span>
+                <button type="button" onclick="adjustScore('math', 10)" class="w-7 h-7 rounded-md bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-sm">+10</button>
+              </div>
+            </div>
+            <input id="mathSlider" type="range" min="200" max="800" step="10" value="680" oninput="updateSliders()" class="w-full" />
+            <div class="flex justify-between text-[11px] text-slate-500">
+              <span>200</span>
+              <span>500</span>
+              <span>800</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Friend Info Inputs -->
+        <form id="predictionForm" onsubmit="submitPrediction(event)" class="space-y-4 pt-1">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label class="block text-xs font-semibold text-slate-300 mb-1">Your Name *</label>
+              <input id="friendNameInput" type="text" required maxlength="32" placeholder="e.g., Amar, Jaida, Youssef..." class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 focus:border-sky-500 focus:outline-none text-sm text-white" />
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-300 mb-1">Short Note / Trash Talk (Optional)</label>
+              <input id="friendNoteInput" type="text" maxlength="60" placeholder="e.g., Math 800 easy work 🔥" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 focus:border-sky-500 focus:outline-none text-sm text-white" />
+            </div>
+          </div>
+
+          <button type="submit" class="w-full py-3.5 px-6 rounded-xl bg-gradient-to-r from-sky-500 to-indigo-600 hover:from-sky-400 hover:to-indigo-500 text-white font-display font-bold text-base shadow-lg shadow-sky-500/20 transition transform active:scale-[0.99]">
+            🚀 Lock In My Prediction
+          </button>
+        </form>
+      </section>
+
+      <!-- Right: Community Stats & Faith Meter (5 cols) -->
+      <section class="lg:col-span-5 flex flex-col justify-between gap-4">
+        <div class="rounded-2xl bg-slate-900/70 border border-slate-800 p-6 shadow-xl space-y-5 flex-1">
+          <div class="flex items-center justify-between">
+            <h2 class="font-display text-lg font-bold text-white">📊 Squad Consensus</h2>
+            <span id="totalGuessesCount" class="text-xs font-semibold px-2.5 py-1 rounded-full bg-slate-800 text-slate-300">0 Guesses</span>
+          </div>
+
+          <!-- Average Score Box -->
+          <div class="p-4 rounded-xl bg-slate-950/80 border border-slate-800/80 text-center">
+            <div class="text-xs text-slate-400 uppercase font-semibold">Community Average</div>
+            <div id="avgTotalDisplay" class="font-display text-4xl font-extrabold text-white mt-1">—</div>
+            <div id="avgSubDisplay" class="text-xs text-slate-400 mt-1">R&W: — • Math: —</div>
+          </div>
+
+          <!-- Faith Meter -->
+          <div class="space-y-2">
+            <div class="flex justify-between text-xs font-semibold">
+              <span class="text-slate-400">Squad Faith Meter</span>
+              <span id="faithPercentLabel" class="text-sky-400">0%</span>
+            </div>
+            <div class="w-full h-3 rounded-full bg-slate-800 overflow-hidden">
+              <div id="faithBar" class="h-full bg-gradient-to-r from-rose-500 via-sky-400 to-emerald-400 transition-all duration-500" style="width: 0%"></div>
+            </div>
+          </div>
+
+          <!-- Biggest Glazer & Biggest Hater -->
+          <div class="grid grid-cols-2 gap-3 pt-1">
+            <div class="p-3.5 rounded-xl bg-emerald-500/10 border border-emerald-500/25">
+              <div class="text-[11px] font-bold uppercase text-emerald-400">🐐 Biggest Glazer</div>
+              <div id="glazerName" class="font-bold text-sm text-white truncate mt-1">—</div>
+              <div id="glazerScore" class="font-display text-lg font-extrabold text-emerald-300">—</div>
+            </div>
+            <div class="p-3.5 rounded-xl bg-rose-500/10 border border-rose-500/25">
+              <div class="text-[11px] font-bold uppercase text-rose-400">💀 Biggest Hater</div>
+              <div id="haterName" class="font-bold text-sm text-white truncate mt-1">—</div>
+              <div id="haterScore" class="font-display text-lg font-extrabold text-rose-300">—</div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- Predictions Leaderboard -->
+    <section class="rounded-2xl bg-slate-900/70 border border-slate-800 p-6 shadow-xl space-y-4">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+        <div>
+          <h2 class="font-display text-xl font-bold text-white">🏆 Friends' Predictions Board</h2>
+          <p class="text-xs text-slate-400">Every locked-in guess before score release</p>
+        </div>
+        <button onclick="openPinModal('clear')" class="self-start sm:self-auto text-xs font-semibold px-3 py-1.5 rounded-lg bg-slate-800/80 hover:bg-slate-800 text-slate-400 hover:text-slate-200 border border-slate-700/70 transition">
+          🗑️ Reset Board
+        </button>
+      </div>
+
+      <div id="predictionsList" class="space-y-3">
+        <!-- Populated dynamically -->
+      </div>
+    </section>
+  </main>
+
+  <!-- Secret PIN Modal (Zero mention of the actual code) -->
+  <div id="pinModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
+    <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-sm w-full p-6 shadow-2xl space-y-4">
+      <div class="flex items-center justify-between">
+        <h3 class="font-display font-bold text-lg text-white">🔒 Omar Only</h3>
+        <button onclick="closePinModal()" class="text-slate-400 hover:text-white text-sm">✕</button>
+      </div>
+      <p class="text-xs text-slate-400">Enter your private 4-digit PIN to continue.</p>
+      <form onsubmit="handlePinSubmit(event)" class="space-y-3">
+        <input id="pinInput" type="password" inputmode="numeric" maxlength="8" placeholder="••••" class="w-full text-center tracking-[0.5em] font-display text-xl py-2.5 rounded-xl bg-slate-950 border border-slate-800 focus:border-sky-500 focus:outline-none text-white" />
+        <p id="pinError" class="text-xs text-rose-400 hidden text-center">Incorrect PIN. Nice try bro 💀</p>
+        <div class="flex gap-2">
+          <button type="button" onclick="closePinModal()" class="flex-1 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold">Cancel</button>
+          <button type="submit" class="flex-1 py-2.5 rounded-xl bg-sky-500 hover:bg-sky-400 text-slate-950 text-xs font-bold">Unlock</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    // ============================================================================
+    // STEALTH PIN VERIFICATION (Hashed so nobody can read your PIN in View Source)
+    // ============================================================================
+    function verifySecretPin(input) {
+      const clean = (input || "").trim();
+      let hash = 0;
+      for (let i = 0; i < clean.length; i++) {
+        hash = hash * 31 + clean.charCodeAt(i);
+      }
+      return hash === 1512326;
+    }
+
+    const STORAGE_KEY = "omar_sat_predictions_v2";
+    const OFFICIAL_KEY = "omar_sat_official_v2";
+
+    let predictions = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+    let officialScore = JSON.parse(localStorage.getItem(OFFICIAL_KEY) || "null");
+    let isAdminUnlocked = false;
+    let pendingPinAction = null;
+
+    function getHypeTier(total) {
+      if (total < 1050) {
+        return { label: "💀 Generational Hater", desc: "Zero faith. Praying on Omar's downfall 💀", badgeClass: "bg-rose-500/20 text-rose-300 border-rose-500/30" };
+      } else if (total < 1250) {
+        return { label: "👀 Playing it Safe", desc: "Lowkey cautious prediction.", badgeClass: "bg-amber-500/20 text-amber-300 border-amber-500/30" };
+      } else if (total < 1400) {
+        return { label: "🤝 Solid Believer", desc: "Respectable score—you got faith in Omar!", badgeClass: "bg-sky-500/20 text-sky-300 border-sky-500/30" };
+      } else if (total < 1520) {
+        return { label: "🔥 Academic Weapon", desc: "High-key locked in. Big score incoming!", badgeClass: "bg-indigo-500/20 text-indigo-300 border-indigo-500/30" };
+      } else {
+        return { label: "🐐 MIT Bound Glazer", desc: "Maximum glaze! 99th percentile faith!", badgeClass: "bg-emerald-500/20 text-emerald-300 border-emerald-500/30" };
+      }
+    }
+
+    function updateSliders() {
+      const rw = parseInt(document.getElementById("rwSlider").value, 10);
+      const math = parseInt(document.getElementById("mathSlider").value, 10);
+      const total = rw + math;
+
+      document.getElementById("rwValueDisplay").textContent = rw;
+      document.getElementById("mathValueDisplay").textContent = math;
+      document.getElementById("totalScoreDisplay").textContent = total;
+
+      const tier = getHypeTier(total);
+      const badge = document.getElementById("hypeBadge");
+      badge.textContent = tier.label;
+      badge.className = `text-xs font-bold px-3 py-1.5 rounded-full border ${tier.badgeClass}`;
+      document.getElementById("hypeDescription").textContent = tier.desc;
+    }
+
+    function adjustScore(section, delta) {
+      const sliderId = section === "rw" ? "rwSlider" : "mathSlider";
+      const slider = document.getElementById(sliderId);
+      let nextVal = parseInt(slider.value, 10) + delta;
+      nextVal = Math.max(200, Math.min(800, nextVal));
+      slider.value = nextVal;
+      updateSliders();
+    }
+
+    function submitPrediction(e) {
+      e.preventDefault();
+      const nameInput = document.getElementById("friendNameInput");
+      const noteInput = document.getElementById("friendNoteInput");
+      const name = nameInput.value.trim();
+      const note = noteInput.value.trim();
+
+      if (!name) return;
+
+      const rw = parseInt(document.getElementById("rwSlider").value, 10);
+      const math = parseInt(document.getElementById("mathSlider").value, 10);
+      const total = rw + math;
+
+      const entry = {
+        id: Date.now().toString(),
+        name,
+        note,
+        rw,
+        math,
+        total,
+        timestamp: new Date().toLocaleDateString("en-US", { month: "short", day: "numeric" })
+      };
+
+      predictions.unshift(entry);
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(predictions));
+
+      nameInput.value = "";
+      noteInput.value = "";
+
+      if (typeof confetti === "function") {
+        confetti({ particleCount: 70, spread: 60, origin: { y: 0.7 } });
+      }
+
+      renderBoard();
+    }
+
+    function renderBoard() {
+      const countEl = document.getElementById("totalGuessesCount");
+      const avgTotalEl = document.getElementById("avgTotalDisplay");
+      const avgSubEl = document.getElementById("avgSubDisplay");
+      const faithLabel = document.getElementById("faithPercentLabel");
+      const faithBar = document.getElementById("faithBar");
+      const glazerName = document.getElementById("glazerName");
+      const glazerScore = document.getElementById("glazerScore");
+      const haterName = document.getElementById("haterName");
+      const haterScore = document.getElementById("haterScore");
+      const listEl = document.getElementById("predictionsList");
+
+      // Official score banner
+      const banner = document.getElementById("officialRevealBanner");
+      if (officialScore) {
+        banner.classList.remove("hidden");
+        document.getElementById("officialTotalDisplay").textContent = officialScore.total;
+        document.getElementById("officialBreakdownDisplay").textContent = `R&W: ${officialScore.rw} • Math: ${officialScore.math}`;
+      } else {
+        banner.classList.add("hidden");
+      }
+
+      countEl.textContent = `${predictions.length} ${predictions.length === 1 ? "Guess" : "Guesses"}`;
+
+      if (predictions.length === 0) {
+        avgTotalEl.textContent = "—";
+        avgSubEl.textContent = "R&W: — • Math: —";
+        faithLabel.textContent = "0%";
+        faithBar.style.width = "0%";
+        glazerName.textContent = "—";
+        glazerScore.textContent = "—";
+        haterName.textContent = "—";
+        haterScore.textContent = "—";
+        listEl.innerHTML = `
+          <div class="text-center py-10 text-slate-500 text-sm">
+            No predictions locked in yet. Be the first to guess Omar's score!
+          </div>
+        `;
+        return;
+      }
+
+      const sumTotal = predictions.reduce((acc, p) => acc + p.total, 0);
+      const sumRW = predictions.reduce((acc, p) => acc + p.rw, 0);
+      const sumMath = predictions.reduce((acc, p) => acc + p.math, 0);
+
+      const avgTotal = Math.round(sumTotal / predictions.length / 10) * 10;
+      const avgRW = Math.round(sumRW / predictions.length / 10) * 10;
+      const avgMath = Math.round(sumMath / predictions.length / 10) * 10;
+
+      avgTotalEl.textContent = avgTotal;
+      avgSubEl.textContent = `R&W: ${avgRW} • Math: ${avgMath}`;
+
+      const faithPct = Math.max(0, Math.min(100, Math.round(((avgTotal - 400) / 1200) * 100)));
+      faithLabel.textContent = `${faithPct}%`;
+      faithBar.style.width = `${faithPct}%`;
+
+      const sortedByScore = [...predictions].sort((a, b) => b.total - a.total);
+      const highest = sortedByScore[0];
+      const lowest = sortedByScore[sortedByScore.length - 1];
+
+      glazerName.textContent = highest.name;
+      glazerScore.textContent = highest.total;
+      haterName.textContent = lowest.name;
+      haterScore.textContent = lowest.total;
+
+      let displayList = [...predictions];
+      if (officialScore) {
+        displayList.sort((a, b) => Math.abs(a.total - officialScore.total) - Math.abs(b.total - officialScore.total));
+      }
+
+      listEl.innerHTML = displayList.map((item, idx) => {
+        const tier = getHypeTier(item.total);
+        const diff = officialScore ? Math.abs(item.total - officialScore.total) : null;
+        const isWinner = officialScore && idx === 0;
+
+        return `
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 rounded-xl bg-slate-950/70 border ${isWinner ? 'border-amber-400/60 bg-amber-500/5' : 'border-slate-800/80'}">
+            <div class="space-y-1">
+              <div class="flex items-center gap-2 flex-wrap">
+                ${isWinner ? '<span class="text-xs font-bold px-2 py-0.5 rounded bg-amber-400 text-slate-950">👑 Closest Guess</span>' : ''}
+                <span class="font-bold text-white text-base">${escapeHtml(item.name)}</span>
+                <span class="text-[11px] font-semibold px-2.5 py-0.5 rounded-full border ${tier.badgeClass}">${tier.label}</span>
+                <span class="text-xs text-slate-500">${item.timestamp}</span>
+              </div>
+              ${item.note ? `<p class="text-xs text-slate-300 italic">"${escapeHtml(item.note)}"</p>` : ''}
+            </div>
+
+            <div class="flex items-center justify-between sm:justify-end gap-4 border-t sm:border-t-0 border-slate-800/80 pt-2 sm:pt-0">
+              <div class="text-xs text-slate-400">
+                <span>R&W: <strong class="text-sky-400">${item.rw}</strong></span>
+                <span class="mx-1.5">•</span>
+                <span>Math: <strong class="text-indigo-400">${item.math}</strong></span>
+                ${diff !== null ? `<div class="text-[11px] text-amber-300 font-semibold mt-0.5">Off by ${diff} pts</div>` : ''}
+              </div>
+              <div class="font-display text-2xl font-extrabold text-white">${item.total}</div>
+              ${isAdminUnlocked ? `
+                <button onclick="deleteSinglePrediction('${item.id}')" class="text-xs px-2 py-1 rounded bg-rose-500/20 text-rose-300 hover:bg-rose-500/30">✕</button>
+              ` : ''}
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    function openPinModal(actionType) {
+      if (isAdminUnlocked) {
+        if (actionType === "clear") {
+          clearAllPredictions();
+        } else {
+          document.getElementById("adminPanel").classList.remove("hidden");
+        }
+        return;
+      }
+      pendingPinAction = actionType;
+      document.getElementById("pinInput").value = "";
+      document.getElementById("pinError").classList.add("hidden");
+      const modal = document.getElementById("pinModal");
+      modal.classList.remove("hidden");
+      modal.classList.add("flex");
+      setTimeout(() => document.getElementById("pinInput").focus(), 50);
+    }
+
+    function closePinModal() {
+      const modal = document.getElementById("pinModal");
+      modal.classList.add("hidden");
+      modal.classList.remove("flex");
+    }
+
+    function handlePinSubmit(e) {
+      e.preventDefault();
+      const val = document.getElementById("pinInput").value;
+      if (verifySecretPin(val)) {
+        isAdminUnlocked = true;
+        closePinModal();
+        document.getElementById("adminPanel").classList.remove("hidden");
+        if (pendingPinAction === "clear") {
+          clearAllPredictions();
+        }
+        renderBoard();
+      } else {
+        document.getElementById("pinError").classList.remove("hidden");
+      }
+    }
+
+    function lockAdmin() {
+      isAdminUnlocked = false;
+      document.getElementById("adminPanel").classList.add("hidden");
+      renderBoard();
+    }
+
+    function clearAllPredictions() {
+      if (!isAdminUnlocked) return;
+      predictions = [];
+      localStorage.removeItem(STORAGE_KEY);
+      renderBoard();
+    }
+
+    function deleteSinglePrediction(id) {
+      if (!isAdminUnlocked) return;
+      predictions = predictions.filter(p => p.id !== id);
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(predictions));
+      renderBoard();
+    }
+
+    function publishOfficialScore() {
+      if (!isAdminUnlocked) return;
+      const rw = Math.max(200, Math.min(800, parseInt(document.getElementById("officialRWInput").value, 10) || 700));
+      const math = Math.max(200, Math.min(800, parseInt(document.getElementById("officialMathInput").value, 10) || 700));
+      officialScore = { rw, math, total: rw + math };
+      localStorage.setItem(OFFICIAL_KEY, JSON.stringify(officialScore));
+      if (typeof confetti === "function") {
+        confetti({ particleCount: 120, spread: 80, origin: { y: 0.6 } });
+      }
+      renderBoard();
+    }
+
+    function hideOfficialScore() {
+      if (!isAdminUnlocked) return;
+      officialScore = null;
+      localStorage.removeItem(OFFICIAL_KEY);
+      renderBoard();
+    }
+
+    function escapeHtml(str) {
+      return String(str).replace(/[&<>"']/g, s => ({
+        "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+      }[s]));
+    }
+
+    updateSliders();
+    renderBoard();
+  </script>
+</body>
+</html>
