@@ -6,6 +6,12 @@
   <title>Guess Omar's SAT Score!</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <!-- Firebase SDKs via Script Tags -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-app.js";
+    import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-firestore.js";
+    window.FirebaseModules = { initializeApp, getFirestore, doc, setDoc, onSnapshot };
+  </script>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     body {
@@ -311,11 +317,8 @@
     </div>
   </div>
 
-  <!-- Firebase Integration & App Logic -->
+  <!-- Firebase Real-Time Sync & App Logic Script -->
   <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-app.js";
-    import { getFirestore, doc, setDoc, onSnapshot, getDoc } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-firestore.js";
-
     const firebaseConfig = {
       apiKey: "AIzaSyCit-Si1mOhCPDZYbBouoATMGsdglPaLXw",
       authDomain: "omar-sat.firebaseapp.com",
@@ -325,9 +328,9 @@
       appId: "1:1096084570863:web:37a820fd2cf7840471511a"
     };
 
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-    const docRef = doc(db, "sat_pool", "global_predictions_data");
+    const app = window.FirebaseModules.initializeApp(firebaseConfig);
+    const db = window.FirebaseModules.getFirestore(app);
+    const docRef = window.FirebaseModules.doc(db, "sat_pool", "global_predictions_data");
 
     function verifySecretPin(input) {
       const clean = (input || "").trim();
@@ -339,9 +342,9 @@
     }
     window.verifySecretPin = verifySecretPin;
 
-    const STORAGE_KEY = "omar_sat_predictions_v6";
-    const OFFICIAL_KEY = "omar_sat_official_v6";
-    const MY_DEVICE_ID_KEY = "omar_sat_device_token_v6";
+    const STORAGE_KEY = "omar_sat_predictions_v7";
+    const OFFICIAL_KEY = "omar_sat_official_v7";
+    const MY_DEVICE_ID_KEY = "omar_sat_device_token_v7";
 
     let deviceToken = localStorage.getItem(MY_DEVICE_ID_KEY);
     if (!deviceToken) {
@@ -355,8 +358,8 @@
     window.pendingPinAction = null;
     window.pendingDeleteId = null;
 
-    // Real-time listener across all devices via Firebase Firestore
-    onSnapshot(docRef, (docSnap) => {
+    // Real-time Firestore sync listener across all devices and networks
+    window.FirebaseModules.onSnapshot(docRef, (docSnap) => {
       if (docSnap.exists()) {
         const data = docSnap.data();
         if (data && Array.isArray(data.predictions)) {
@@ -375,7 +378,7 @@
       window.renderBoard();
 
       try {
-        await setDoc(docRef, {
+        await window.FirebaseModules.setDoc(docRef, {
           predictions: window.predictions,
           officialScore: window.officialScore,
           updatedAt: Date.now()
