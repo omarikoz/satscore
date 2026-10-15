@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Guess Omar's SAT Score! 🎯</title>
+  <title>Guess Omar's SAT Score!</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -12,7 +12,6 @@
       font-family: 'Inter', sans-serif;
       background-color: #090d16;
       color: #f8fafc;
-      overflow-x: hidden;
     }
     .font-display {
       font-family: 'Space Grotesk', sans-serif;
@@ -24,7 +23,6 @@
       border-radius: 999px;
       background: #1e293b;
       outline: none;
-      cursor: pointer;
     }
     input[type="range"]::-webkit-slider-thumb {
       -webkit-appearance: none;
@@ -41,63 +39,52 @@
     input[type="range"]::-webkit-slider-thumb:hover {
       transform: scale(1.15);
     }
-    input[type="range"]::-moz-range-thumb {
-      width: 24px;
-      height: 24px;
-      border-radius: 50%;
-      background: #38bdf8;
-      cursor: pointer;
-      border: 3px solid #0f172a;
-      box-shadow: 0 0 12px rgba(56, 189, 248, 0.7);
-    }
   </style>
 </head>
-<body class="min-h-screen bg-gradient-to-b from-[#090d16] via-[#0f172a] to-[#090d16] text-slate-100 pb-20">
-
-  <!-- Floating Toast Notification -->
-  <div id="toastContainer" class="fixed bottom-5 right-5 left-5 sm:left-auto z-50 max-w-sm hidden transition-all duration-300">
-    <div class="bg-slate-900/95 border border-sky-500/40 text-white px-4 py-3 rounded-2xl shadow-2xl flex items-center gap-3 backdrop-blur-md">
-      <span id="toastIcon" class="text-lg">✨</span>
-      <span id="toastMessage" class="text-xs sm:text-sm font-semibold text-slate-100">Notification</span>
-    </div>
-  </div>
+<body class="min-h-screen bg-gradient-to-b from-[#090d16] via-[#0f172a] to-[#090d16] text-slate-100 pb-16">
 
   <!-- Top Navbar -->
   <header class="border-b border-slate-800/80 bg-slate-900/60 backdrop-blur-md sticky top-0 z-30">
-    <div class="max-w-5xl mx-auto px-4 py-3.5 flex flex-wrap items-center justify-between gap-3">
-      <div class="flex items-center gap-2.5">
-        <span class="text-2xl">🎯</span>
-        <div>
-          <div class="flex items-center gap-2 flex-wrap">
-            <h1 class="font-display font-bold text-lg sm:text-xl tracking-tight text-white">Guess Omar's SAT</h1>
-            <span id="syncStatusPill" class="inline-flex items-center gap-1.5 text-[11px] font-semibold px-2.5 py-0.5 rounded-full bg-emerald-500/15 text-emerald-300 border border-emerald-500/30">
-              <span id="syncDot" class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-              <span id="syncStatusText">🟢 Global Sync Live</span>
-            </span>
-          </div>
-          <p class="text-xs text-slate-400">Official Prediction Pool • 1 guess per person</p>
+    <div class="max-w-5xl mx-auto px-4 py-3.5 flex items-center justify-between">
+      <div>
+        <div class="flex items-center gap-2">
+          <h1 class="font-display font-bold text-lg sm:text-xl tracking-tight text-white">Guess Omar's SAT</h1>
+          <span id="syncStatusBadge" class="inline-flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-300 border border-emerald-500/30">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> Live Sync
+          </span>
         </div>
+        <p class="text-xs text-slate-400">Official Prediction Pool • 1 Guess Per Person</p>
       </div>
 
       <div class="flex items-center gap-2">
-        <button type="button" onclick="manualSyncRefresh()" title="Sync latest predictions" class="text-xs font-semibold px-2.5 py-1.5 rounded-lg bg-slate-800/80 hover:bg-slate-700 text-slate-300 border border-slate-700 transition cursor-pointer">
-          🔄 Sync
-        </button>
-        <button id="adminToggleBtn" type="button" onclick="openPinModal({ type: 'admin' })" class="text-xs font-semibold px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition cursor-pointer">
-          🔒 Owner Lock
+        <button id="adminToggleBtn" onclick="openPinModal('admin')" class="text-xs font-semibold px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition">
+          Owner Lock
         </button>
       </div>
     </div>
   </header>
 
-  <main class="max-w-5xl mx-auto px-4 pt-6 space-y-8">
+  <main class="max-w-5xl mx-auto px-4 pt-6 space-y-6">
+
+    <!-- PRIZE HERO BANNER: A2rab Guess Leh Gayza Meny -->
+    <div class="relative overflow-hidden rounded-2xl p-6 sm:p-8 bg-gradient-to-r from-amber-500/20 via-fuchsia-500/20 to-sky-500/20 border border-amber-400/40 shadow-2xl text-center">
+      <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-amber-400/20 border border-amber-400/40 text-amber-300 text-xs font-bold uppercase tracking-wider mb-3">
+        Official Prize Challenge
+      </div>
+      <h2 class="font-display text-3xl sm:text-5xl font-extrabold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-white to-sky-300">
+        A2rab Guess Leh Gayza Meny
+      </h2>
+      <p class="text-xs sm:text-sm text-slate-300 mt-2 max-w-xl mx-auto">
+        Lock in your exact SAT score prediction below before scores drop. Closest prediction to Omar's official score takes the prize!
+      </p>
+    </div>
 
     <!-- Official Score Reveal Banner (Hidden until Omar reveals it) -->
-    <div id="officialRevealBanner" class="hidden rounded-2xl p-6 bg-gradient-to-r from-amber-500/20 via-purple-500/20 to-sky-500/20 border border-amber-400/40 shadow-xl">
+    <div id="officialRevealBanner" class="hidden rounded-2xl p-6 bg-gradient-to-r from-emerald-500/20 via-amber-500/20 to-sky-500/20 border border-amber-400/50 shadow-xl">
       <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
         <div>
           <span class="inline-block text-xs font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-amber-400/20 text-amber-300 border border-amber-400/30 mb-2">
-            🚨 Official Score Released
+            Official Score Released
           </span>
           <h2 class="font-display text-2xl sm:text-3xl font-bold text-white">Omar's Official SAT Score is In!</h2>
           <p class="text-sm text-slate-300 mt-1">The leaderboard below is now ranked by who guessed the closest.</p>
@@ -105,7 +92,7 @@
         <div class="text-center bg-slate-950/80 px-6 py-4 rounded-xl border border-amber-400/40 min-w-[180px]">
           <div class="text-xs text-slate-400 uppercase font-semibold">Official Total</div>
           <div id="officialTotalDisplay" class="font-display text-4xl font-extrabold text-amber-400 mt-0.5">1500</div>
-          <div id="officialBreakdownDisplay" class="text-xs text-slate-400 mt-1">R&amp;W: 740 • Math: 760</div>
+          <div id="officialBreakdownDisplay" class="text-xs text-slate-400 mt-1">R&W: 740 • Math: 760</div>
         </div>
       </div>
     </div>
@@ -114,17 +101,13 @@
     <div id="adminPanel" class="hidden rounded-2xl p-5 bg-slate-900/90 border border-sky-500/40 shadow-lg space-y-4">
       <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-800 pb-3">
         <div class="flex items-center gap-2">
-          <span class="text-lg">👑</span>
-          <div>
-            <h3 class="font-display font-bold text-white">Omar's Control Panel (Unlocked)</h3>
-            <p class="text-[11px] text-slate-400">You can now delete any individual prediction below or clear the entire board globally.</p>
-          </div>
+          <h3 class="font-display font-bold text-white">Omar's Control Panel (Unlocked)</h3>
         </div>
         <div class="flex items-center gap-2">
-          <button type="button" onclick="clearAllPredictions()" class="text-xs font-bold px-3 py-1.5 rounded-lg bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 border border-rose-500/40 transition cursor-pointer">
-            🗑️ Clear All Predictions
+          <button onclick="clearAllPredictions()" class="text-xs font-bold px-3 py-1.5 rounded-lg bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 border border-rose-500/40 transition">
+            Clear All Predictions
           </button>
-          <button type="button" onclick="lockAdmin()" class="text-xs font-semibold px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 cursor-pointer">
+          <button onclick="lockAdmin()" class="text-xs font-semibold px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300">
             Lock Panel
           </button>
         </div>
@@ -132,7 +115,7 @@
 
       <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 items-end">
         <div>
-          <label class="block text-xs text-slate-400 mb-1">Official Reading &amp; Writing (200-800)</label>
+          <label class="block text-xs text-slate-400 mb-1">Official Reading & Writing (200-800)</label>
           <input id="officialRWInput" type="number" min="200" max="800" step="10" value="750" class="w-full px-3 py-2 rounded-lg bg-slate-950 border border-slate-700 text-white text-sm" />
         </div>
         <div>
@@ -140,10 +123,10 @@
           <input id="officialMathInput" type="number" min="200" max="800" step="10" value="780" class="w-full px-3 py-2 rounded-lg bg-slate-950 border border-slate-700 text-white text-sm" />
         </div>
         <div class="flex gap-2">
-          <button type="button" onclick="publishOfficialScore()" class="flex-1 py-2 px-3 rounded-lg bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs transition cursor-pointer">
-            🏆 Reveal Official Score
+          <button onclick="publishOfficialScore()" class="flex-1 py-2 px-3 rounded-lg bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs transition">
+            Reveal Score
           </button>
-          <button type="button" onclick="hideOfficialScore()" class="py-2 px-3 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold text-xs transition cursor-pointer">
+          <button onclick="hideOfficialScore()" class="py-2 px-3 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold text-xs transition">
             Hide
           </button>
         </div>
@@ -156,15 +139,34 @@
       <!-- Left: Interactive Score Picker OR Locked-In State (7 cols) -->
       <section class="lg:col-span-7 rounded-2xl bg-slate-900/70 border border-slate-800 p-6 shadow-xl">
 
-        <!-- VIEW A: Interactive Prediction Form (Shown when user has 0 active predictions) -->
-        <div id="pickerFormView" class="space-y-6">
-          <div class="flex items-center justify-between gap-2">
+        <!-- STATE A: Friend already submitted a prediction on this device -->
+        <div id="lockedUserCard" class="hidden py-8 px-4 text-center space-y-5">
+          <div class="space-y-1">
+            <span class="text-xs font-bold uppercase tracking-wider text-emerald-400">1 Prediction Per Person</span>
+            <h3 class="font-display text-2xl font-bold text-white">Your Prediction is Locked In!</h3>
+            <p class="text-xs text-slate-400">Want to change your score? Delete your current guess below to submit a new one.</p>
+          </div>
+
+          <div class="max-w-xs mx-auto p-4 rounded-xl bg-slate-950/90 border border-slate-800">
+            <div id="myLockedName" class="text-xs font-bold text-slate-400 uppercase">Your Guess</div>
+            <div id="myLockedTotal" class="font-display text-5xl font-extrabold text-sky-400 my-1">1450</div>
+            <div id="myLockedSub" class="text-xs text-slate-400">R&W: 720 • Math: 730</div>
+          </div>
+
+          <button type="button" onclick="deleteMyOwnPrediction()" class="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 border border-rose-500/40 font-display font-bold text-xs transition">
+            Delete My Prediction & Guess Again
+          </button>
+        </div>
+
+        <!-- STATE B: Score Picker Form -->
+        <div id="pickerFormContainer" class="space-y-6">
+          <div class="flex items-center justify-between">
             <div>
               <h2 class="font-display text-xl font-bold text-white">Lock In Your Prediction</h2>
-              <p class="text-xs text-slate-400">1 prediction per friend • You can delete &amp; re-guess anytime</p>
+              <p class="text-xs text-slate-400">Slide Reading & Writing and Math to set your guess</p>
             </div>
-            <div id="hypeBadge" class="text-xs font-bold px-3 py-1.5 rounded-full bg-sky-500/20 text-sky-300 border border-sky-500/30 shrink-0">
-              🤝 Solid Believer
+            <div id="hypeBadge" class="text-xs font-bold px-3 py-1.5 rounded-full bg-sky-500/20 text-sky-300 border border-sky-500/30">
+              Solid Believer
             </div>
           </div>
 
@@ -182,11 +184,11 @@
             <!-- Reading & Writing -->
             <div class="p-4 rounded-xl bg-slate-950/50 border border-slate-800/80 space-y-3">
               <div class="flex items-center justify-between">
-                <span class="text-sm font-semibold text-slate-200">📖 Reading &amp; Writing</span>
+                <span class="text-sm font-semibold text-slate-200">Reading & Writing</span>
                 <div class="flex items-center gap-1.5">
-                  <button type="button" onclick="adjustScore('rw', -10)" class="w-7 h-7 rounded-md bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-sm cursor-pointer">-10</button>
+                  <button type="button" onclick="adjustScore('rw', -10)" class="w-7 h-7 rounded-md bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-sm">-10</button>
                   <span id="rwValueDisplay" class="font-display font-bold text-xl text-sky-400 w-12 text-center">670</span>
-                  <button type="button" onclick="adjustScore('rw', 10)" class="w-7 h-7 rounded-md bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-sm cursor-pointer">+10</button>
+                  <button type="button" onclick="adjustScore('rw', 10)" class="w-7 h-7 rounded-md bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-sm">+10</button>
                 </div>
               </div>
               <input id="rwSlider" type="range" min="200" max="800" step="10" value="670" oninput="updateSliders()" class="w-full" />
@@ -200,11 +202,11 @@
             <!-- Math -->
             <div class="p-4 rounded-xl bg-slate-950/50 border border-slate-800/80 space-y-3">
               <div class="flex items-center justify-between">
-                <span class="text-sm font-semibold text-slate-200">📐 Math</span>
+                <span class="text-sm font-semibold text-slate-200">Math</span>
                 <div class="flex items-center gap-1.5">
-                  <button type="button" onclick="adjustScore('math', -10)" class="w-7 h-7 rounded-md bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-sm cursor-pointer">-10</button>
+                  <button type="button" onclick="adjustScore('math', -10)" class="w-7 h-7 rounded-md bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-sm">-10</button>
                   <span id="mathValueDisplay" class="font-display font-bold text-xl text-indigo-400 w-12 text-center">680</span>
-                  <button type="button" onclick="adjustScore('math', 10)" class="w-7 h-7 rounded-md bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-sm cursor-pointer">+10</button>
+                  <button type="button" onclick="adjustScore('math', 10)" class="w-7 h-7 rounded-md bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-sm">+10</button>
                 </div>
               </div>
               <input id="mathSlider" type="range" min="200" max="800" step="10" value="680" oninput="updateSliders()" class="w-full" />
@@ -224,67 +226,27 @@
                 <input id="friendNameInput" type="text" required maxlength="32" placeholder="e.g., Amar, Jaida, Youssef..." class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 focus:border-sky-500 focus:outline-none text-sm text-white" />
               </div>
               <div>
-                <label class="block text-xs font-semibold text-slate-300 mb-1">Short Note / Trash Talk (Optional)</label>
-                <input id="friendNoteInput" type="text" maxlength="60" placeholder="e.g., Math 800 easy work 🔥" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 focus:border-sky-500 focus:outline-none text-sm text-white" />
+                <label class="block text-xs font-semibold text-slate-300 mb-1">Short Note (Optional)</label>
+                <input id="friendNoteInput" type="text" maxlength="60" placeholder="e.g., Math 800 easy work" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 focus:border-sky-500 focus:outline-none text-sm text-white" />
               </div>
             </div>
 
-            <button id="submitBtn" type="submit" class="w-full py-3.5 px-6 rounded-xl bg-gradient-to-r from-sky-500 to-indigo-600 hover:from-sky-400 hover:to-indigo-500 text-white font-display font-bold text-base shadow-lg shadow-sky-500/20 transition transform active:scale-[0.99] cursor-pointer">
-              🚀 Lock In My Prediction
+            <p id="duplicateNameError" class="hidden text-xs text-rose-400 font-semibold">
+              Someone already locked in a guess with that name! Delete the first guess if you want to change it.
+            </p>
+
+            <button id="submitBtn" type="submit" class="w-full py-3.5 px-6 rounded-xl bg-gradient-to-r from-sky-500 to-indigo-600 hover:from-sky-400 hover:to-indigo-500 text-white font-display font-bold text-base shadow-lg shadow-sky-500/20 transition transform active:scale-[0.99]">
+              Lock In My Prediction
             </button>
           </form>
         </div>
-
-        <!-- VIEW B: "Your Prediction is Locked In!" View (Enforces 1 prediction per person with Self-Delete & Re-guess) -->
-        <div id="lockedInView" class="hidden space-y-6 py-2">
-          <div class="flex items-center justify-between flex-wrap gap-2 border-b border-slate-800 pb-4">
-            <div class="flex items-center gap-2.5">
-              <span class="text-2xl">✅</span>
-              <div>
-                <span class="text-[11px] font-bold uppercase tracking-wider text-emerald-400">1 Prediction Limit Active</span>
-                <h2 class="font-display text-xl font-bold text-white">Your Prediction is Locked In!</h2>
-              </div>
-            </div>
-            <span id="myLockedTierBadge" class="text-xs font-bold px-3 py-1.5 rounded-full bg-sky-500/20 text-sky-300 border border-sky-500/30">
-              🤝 Solid Believer
-            </span>
-          </div>
-
-          <div class="rounded-2xl bg-slate-950/90 border border-emerald-500/30 p-6 text-center space-y-3">
-            <div class="text-xs font-semibold text-slate-400 uppercase tracking-wider">
-              Locked in as <span id="myLockedName" class="text-white font-bold">Friend</span>
-            </div>
-            <div id="myLockedTotal" class="font-display text-6xl sm:text-7xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-sky-400 to-indigo-400">
-              1400
-            </div>
-            <div class="flex items-center justify-center gap-4 text-sm text-slate-300 pt-1">
-              <span class="px-3 py-1 rounded-lg bg-slate-900 border border-slate-800">
-                📖 R&amp;W: <strong id="myLockedRW" class="text-sky-400">700</strong>
-              </span>
-              <span class="px-3 py-1 rounded-lg bg-slate-900 border border-slate-800">
-                📐 Math: <strong id="myLockedMath" class="text-indigo-400">700</strong>
-              </span>
-            </div>
-            <p id="myLockedNote" class="text-xs text-slate-400 italic pt-1 hidden"></p>
-          </div>
-
-          <div class="p-4 rounded-xl bg-slate-950/60 border border-slate-800/80 flex flex-col sm:flex-row items-center justify-between gap-3">
-            <div class="text-xs text-slate-400 text-center sm:text-left">
-              Changed your mind? Each person gets <strong>1 prediction</strong>, but you can delete your first prediction to submit a new one.
-            </div>
-            <button type="button" onclick="deleteMyOwnPrediction()" class="w-full sm:w-auto shrink-0 py-2.5 px-4 rounded-xl bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 border border-rose-500/40 font-bold text-xs transition cursor-pointer">
-              🔄 Delete My Prediction &amp; Guess Again
-            </button>
-          </div>
-        </div>
-
       </section>
 
       <!-- Right: Community Stats & Faith Meter (5 cols) -->
       <section class="lg:col-span-5 flex flex-col justify-between gap-4">
         <div class="rounded-2xl bg-slate-900/70 border border-slate-800 p-6 shadow-xl space-y-5 flex-1">
           <div class="flex items-center justify-between">
-            <h2 class="font-display text-lg font-bold text-white">📊 Squad Consensus</h2>
+            <h2 class="font-display text-lg font-bold text-white">Squad Consensus</h2>
             <span id="totalGuessesCount" class="text-xs font-semibold px-2.5 py-1 rounded-full bg-slate-800 text-slate-300">0 Guesses</span>
           </div>
 
@@ -292,7 +254,7 @@
           <div class="p-4 rounded-xl bg-slate-950/80 border border-slate-800/80 text-center">
             <div class="text-xs text-slate-400 uppercase font-semibold">Community Average</div>
             <div id="avgTotalDisplay" class="font-display text-4xl font-extrabold text-white mt-1">—</div>
-            <div id="avgSubDisplay" class="text-xs text-slate-400 mt-1">R&amp;W: — • Math: —</div>
+            <div id="avgSubDisplay" class="text-xs text-slate-400 mt-1">R&W: — • Math: —</div>
           </div>
 
           <!-- Faith Meter -->
@@ -306,15 +268,15 @@
             </div>
           </div>
 
-          <!-- Biggest Glazer & Biggest Hater -->
+          <!-- Biggest Guess & Smallest Guess -->
           <div class="grid grid-cols-2 gap-3 pt-1">
             <div class="p-3.5 rounded-xl bg-emerald-500/10 border border-emerald-500/25">
-              <div class="text-[11px] font-bold uppercase text-emerald-400">🐐 Biggest Glazer</div>
+              <div class="text-[11px] font-bold uppercase text-emerald-400">Biggest Guess</div>
               <div id="glazerName" class="font-bold text-sm text-white truncate mt-1">—</div>
               <div id="glazerScore" class="font-display text-lg font-extrabold text-emerald-300">—</div>
             </div>
             <div class="p-3.5 rounded-xl bg-rose-500/10 border border-rose-500/25">
-              <div class="text-[11px] font-bold uppercase text-rose-400">💀 Biggest Hater</div>
+              <div class="text-[11px] font-bold uppercase text-rose-400">Smallest Guess</div>
               <div id="haterName" class="font-bold text-sm text-white truncate mt-1">—</div>
               <div id="haterScore" class="font-display text-lg font-extrabold text-rose-300">—</div>
             </div>
@@ -327,11 +289,11 @@
     <section class="rounded-2xl bg-slate-900/70 border border-slate-800 p-6 shadow-xl space-y-4">
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
         <div>
-          <h2 class="font-display text-xl font-bold text-white">🏆 Global Predictions Board</h2>
-          <p class="text-xs text-slate-400">Live across all devices • Click your own guess to change it, or use Owner PIN to moderate</p>
+          <h2 class="font-display text-xl font-bold text-white">Friends' Predictions Board</h2>
+          <p class="text-xs text-slate-400">Synced globally across all devices</p>
         </div>
-        <button type="button" onclick="openPinModal({ type: 'clear' })" class="self-start sm:self-auto text-xs font-semibold px-3 py-1.5 rounded-lg bg-slate-800/80 hover:bg-slate-800 text-slate-400 hover:text-slate-200 border border-slate-700/70 transition cursor-pointer">
-          🗑️ Reset Board
+        <button onclick="openPinModal('clear')" class="self-start sm:self-auto text-xs font-semibold px-3 py-1.5 rounded-lg bg-slate-800/80 hover:bg-slate-800 text-slate-400 hover:text-slate-200 border border-slate-700/70 transition">
+          Reset Board
         </button>
       </div>
 
@@ -345,16 +307,16 @@
   <div id="pinModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
     <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-sm w-full p-6 shadow-2xl space-y-4">
       <div class="flex items-center justify-between">
-        <h3 class="font-display font-bold text-lg text-white">🔒 Omar Only</h3>
-        <button type="button" onclick="closePinModal()" class="text-slate-400 hover:text-white text-sm cursor-pointer">✕</button>
+        <h3 class="font-display font-bold text-lg text-white">Omar Only</h3>
+        <button onclick="closePinModal()" class="text-slate-400 hover:text-white text-sm">✕</button>
       </div>
-      <p id="pinModalSubtitle" class="text-xs text-slate-400">Enter your private 4-digit PIN to continue.</p>
+      <p class="text-xs text-slate-400">Enter your private 4-digit PIN to continue.</p>
       <form onsubmit="handlePinSubmit(event)" class="space-y-3">
         <input id="pinInput" type="password" inputmode="numeric" maxlength="8" placeholder="••••" class="w-full text-center tracking-[0.5em] font-display text-xl py-2.5 rounded-xl bg-slate-950 border border-slate-800 focus:border-sky-500 focus:outline-none text-white" />
-        <p id="pinError" class="text-xs text-rose-400 hidden text-center">Incorrect PIN. Nice try bro 💀</p>
+        <p id="pinError" class="text-xs text-rose-400 hidden text-center">Incorrect PIN.</p>
         <div class="flex gap-2">
-          <button type="button" onclick="closePinModal()" class="flex-1 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold cursor-pointer">Cancel</button>
-          <button type="submit" class="flex-1 py-2.5 rounded-xl bg-sky-500 hover:bg-sky-400 text-slate-950 text-xs font-bold cursor-pointer">Unlock</button>
+          <button type="button" onclick="closePinModal()" class="flex-1 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold">Cancel</button>
+          <button type="submit" class="flex-1 py-2.5 rounded-xl bg-sky-500 hover:bg-sky-400 text-slate-950 text-xs font-bold">Unlock</button>
         </div>
       </form>
     </div>
@@ -362,10 +324,10 @@
 
   <script>
     // ============================================================================
-    // 1. STEALTH PIN VERIFICATION (Hashed so nobody can read your PIN in View Source)
+    // STEALTH PIN VERIFICATION (Hashed so nobody can read your PIN in View Source)
     // ============================================================================
     function verifySecretPin(input) {
-      const clean = String(input || "").trim();
+      const clean = (input || "").trim();
       let hash = 0;
       for (let i = 0; i < clean.length; i++) {
         hash = hash * 31 + clean.charCodeAt(i);
@@ -374,312 +336,73 @@
     }
 
     // ============================================================================
-    // 2. PERSISTENT DEVICE ID & GLOBAL CLOUD SYNC CONFIGURATION
+    // GLOBAL CLOUD SYNC + LOCAL FALLBACK (Works on GitHub Pages across all phones)
     // ============================================================================
-    const STORAGE_STATE_KEY = "omar_sat_global_state_v3";
-    const DEVICE_ID_KEY = "omar_sat_device_id_v3";
+    const CLOUD_API_URL = "https://kvdb.io/A6Xy9mPq7VzL2wK4nJ8rBt/omarikoz_sat_pool_2026";
+    const STORAGE_KEY = "omar_sat_predictions_v3";
+    const OFFICIAL_KEY = "omar_sat_official_v3";
+    const MY_DEVICE_ID_KEY = "omar_sat_device_token_v3";
 
-    // Primary Real-Time Global Pub/Sub + Cached Stream (Zero-CORS, Instant SSE)
-    const NTFY_TOPIC_URL = "https://ntfy.sh/omarikoz_sat_global_pool_2026_v1";
-    // Secondary Persistent Key-Value Cloud Backup
-    const KV_GET_URL = "https://keyvalue.immanuel.co/api/KeyVal/GetValue/49m2x8q1/omar_sat_v1";
-    const KV_SET_URL = "https://keyvalue.immanuel.co/api/KeyVal/UpdateValue/49m2x8q1/omar_sat_v1";
-
-    function getOrCreateDeviceId() {
-      let id = localStorage.getItem(DEVICE_ID_KEY);
-      if (!id) {
-        id = "dev_" + Date.now().toString(36) + "_" + Math.random().toString(36).substring(2, 10);
-        localStorage.setItem(DEVICE_ID_KEY, id);
-      }
-      return id;
+    let deviceToken = localStorage.getItem(MY_DEVICE_ID_KEY);
+    if (!deviceToken) {
+      deviceToken = "dev_" + Math.random().toString(36).substring(2, 11) + "_" + Date.now();
+      localStorage.setItem(MY_DEVICE_ID_KEY, deviceToken);
     }
 
-    const myDeviceId = getOrCreateDeviceId();
-
-    // Global State Object
-    let appState = {
-      version: 0,
-      updatedAt: 0,
-      predictions: [],
-      officialScore: null
-    };
-
-    // Load cached state from localStorage initially
-    try {
-      const saved = JSON.parse(localStorage.getItem(STORAGE_STATE_KEY) || "null");
-      if (saved && Array.isArray(saved.predictions)) {
-        appState = {
-          version: Number(saved.version) || 0,
-          updatedAt: Number(saved.updatedAt) || 0,
-          predictions: saved.predictions,
-          officialScore: saved.officialScore || null
-        };
-      }
-    } catch (err) {
-      console.warn("Could not parse local state cache:", err);
-    }
-
+    let predictions = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+    let officialScore = JSON.parse(localStorage.getItem(OFFICIAL_KEY) || "null");
     let isAdminUnlocked = false;
     let pendingPinAction = null;
-    let sseConnection = null;
+    let pendingDeleteId = null;
 
-    // ============================================================================
-    // 3. TOAST NOTIFICATIONS
-    // ============================================================================
-    let toastTimer = null;
-    function showToast(message, icon = "✨") {
-      const container = document.getElementById("toastContainer");
-      const msgEl = document.getElementById("toastMessage");
-      const iconEl = document.getElementById("toastIcon");
-      if (!container || !msgEl) return;
-
-      msgEl.textContent = message;
-      iconEl.textContent = icon;
-      container.classList.remove("hidden");
-
-      if (toastTimer) clearTimeout(toastTimer);
-      toastTimer = setTimeout(() => {
-        container.classList.add("hidden");
-      }, 3600);
-    }
-
-    function setSyncStatus(online, text) {
-      const pill = document.getElementById("syncStatusPill");
-      const dot = document.getElementById("syncDot");
-      const label = document.getElementById("syncStatusText");
-      if (!pill || !dot || !label) return;
-
-      if (online) {
-        pill.className = "inline-flex items-center gap-1.5 text-[11px] font-semibold px-2.5 py-0.5 rounded-full bg-emerald-500/15 text-emerald-300 border border-emerald-500/30";
-        dot.className = "w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse";
-        label.textContent = text || "🟢 Global Sync Live";
-      } else {
-        pill.className = "inline-flex items-center gap-1.5 text-[11px] font-semibold px-2.5 py-0.5 rounded-full bg-amber-500/15 text-amber-300 border border-amber-500/30";
-        dot.className = "w-1.5 h-1.5 rounded-full bg-amber-400";
-        label.textContent = text || "🟡 Reconnecting...";
-      }
-    }
-
-    // ============================================================================
-    // 4. GLOBAL CLOUD SYNC ENGINE (NTFY STREAM + KEYVAL BACKUP)
-    // ============================================================================
-    function saveStateLocally() {
+    async function fetchCloudState() {
       try {
-        localStorage.setItem(STORAGE_STATE_KEY, JSON.stringify(appState));
-      } catch (e) {
-        console.warn("Local storage save error:", e);
-      }
-    }
-
-    function applyIncomingSnapshot(incoming) {
-      if (!incoming || !Array.isArray(incoming.predictions)) return false;
-      const inVer = Number(incoming.version) || 0;
-      const inTime = Number(incoming.updatedAt) || 0;
-
-      // Accept snapshot if it has a higher version, or same version with newer timestamp
-      if (inVer > appState.version || (inVer === appState.version && inTime > appState.updatedAt)) {
-        appState = {
-          version: inVer,
-          updatedAt: inTime,
-          predictions: incoming.predictions,
-          officialScore: incoming.officialScore || null
-        };
-        saveStateLocally();
-        renderBoard();
-        return true;
-      }
-      return false;
-    }
-
-    // Encode/Decode helpers for secondary KV backup
-    function encodeStateBase64(stateObj) {
-      try {
-        const json = JSON.stringify(stateObj);
-        const b64 = btoa(unescape(encodeURIComponent(json)));
-        return b64.replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
-      } catch (e) {
-        return "";
-      }
-    }
-
-    function decodeStateBase64(str) {
-      try {
-        if (!str || typeof str !== "string") return null;
-        let b64 = str.replace(/-/g, "+").replace(/_/g, "/");
-        while (b64.length % 4) b64 += "=";
-        const json = decodeURIComponent(escape(atob(b64)));
-        return JSON.parse(json);
-      } catch (e) {
-        return null;
-      }
-    }
-
-    // Push updated state globally to all devices
-    async function pushGlobalState() {
-      saveStateLocally();
-      renderBoard();
-
-      const payloadString = JSON.stringify(appState);
-
-      // 1. Push to ntfy.sh (No custom headers = zero CORS preflight issues on GitHub Pages)
-      try {
-        await fetch(NTFY_TOPIC_URL, {
-          method: "POST",
-          body: payloadString
-        });
-        setSyncStatus(true, "🟢 Global Sync Live");
-      } catch (err) {
-        console.warn("Primary ntfy push warning:", err);
-      }
-
-      // 2. Push to secondary KeyVal backup
-      try {
-        const encoded = encodeStateBase64(appState);
-        if (encoded && encoded.length < 7500) {
-          await fetch(`${KV_SET_URL}/${encoded}`, { method: "POST" });
-        }
-      } catch (err) {
-        console.warn("Secondary KV backup warning:", err);
-      }
-    }
-
-    // Pull latest state from both global channels
-    async function fetchGlobalState() {
-      let bestSnapshot = null;
-
-      // 1. Poll ntfy.sh cached messages
-      try {
-        const res = await fetch(`${NTFY_TOPIC_URL}/json?poll=1`, { cache: "no-store" });
+        const res = await fetch(CLOUD_API_URL, { cache: "no-store" });
         if (res.ok) {
-          const text = await res.text();
-          const lines = text.split("\n").filter(Boolean);
-          for (const line of lines) {
-            try {
-              const event = JSON.parse(line);
-              if (event && event.event === "message" && event.message) {
-                const parsed = JSON.parse(event.message);
-                if (parsed && Array.isArray(parsed.predictions)) {
-                  if (
-                    !bestSnapshot ||
-                    Number(parsed.version) > Number(bestSnapshot.version) ||
-                    (Number(parsed.version) === Number(bestSnapshot.version) &&
-                      Number(parsed.updatedAt) > Number(bestSnapshot.updatedAt))
-                  ) {
-                    bestSnapshot = parsed;
-                  }
-                }
-              }
-            } catch (innerErr) {
-              // Ignore malformed line
-            }
-          }
-          setSyncStatus(true, "🟢 Global Sync Live");
-        }
-      } catch (err) {
-        console.warn("Primary ntfy poll warning:", err);
-      }
-
-      // 2. Poll secondary KeyVal backup in case ntfy cache expired
-      try {
-        const kvRes = await fetch(KV_GET_URL, { cache: "no-store" });
-        if (kvRes.ok) {
-          const rawVal = await kvRes.json();
-          if (rawVal) {
-            const decoded = decodeStateBase64(rawVal);
-            if (decoded && Array.isArray(decoded.predictions)) {
-              if (
-                !bestSnapshot ||
-                Number(decoded.version) > Number(bestSnapshot.version) ||
-                (Number(decoded.version) === Number(bestSnapshot.version) &&
-                  Number(decoded.updatedAt) > Number(bestSnapshot.updatedAt))
-              ) {
-                bestSnapshot = decoded;
-              }
-            }
+          const data = await res.json();
+          if (data && Array.isArray(data.predictions)) {
+            predictions = data.predictions;
+            officialScore = data.officialScore || null;
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(predictions));
+            localStorage.setItem(OFFICIAL_KEY, JSON.stringify(officialScore));
+            renderBoard();
           }
         }
       } catch (err) {
-        console.warn("Secondary KV poll warning:", err);
-      }
-
-      if (bestSnapshot) {
-        applyIncomingSnapshot(bestSnapshot);
+        // Fallback silently to local cache if offline
       }
     }
 
-    // Subscribe to real-time Server-Sent Events (SSE) so guesses appear live
-    function subscribeLiveStream() {
-      if (sseConnection) {
-        try {
-          sseConnection.close();
-        } catch (e) {}
-      }
-
+    async function pushCloudState() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(predictions));
+      localStorage.setItem(OFFICIAL_KEY, JSON.stringify(officialScore));
+      renderBoard();
       try {
-        sseConnection = new EventSource(`${NTFY_TOPIC_URL}/sse`);
-        sseConnection.onopen = () => {
-          setSyncStatus(true, "🟢 Global Sync Live");
-        };
-        sseConnection.onmessage = (e) => {
-          try {
-            const event = JSON.parse(e.data);
-            if (event && event.event === "message" && event.message) {
-              const incoming = JSON.parse(event.message);
-              applyIncomingSnapshot(incoming);
-            }
-          } catch (err) {
-            // Ignore non-JSON keepalive
-          }
-        };
-        sseConnection.onerror = () => {
-          // Periodic poll still runs every 8 seconds as fallback
-          setSyncStatus(true, "🟢 Global Sync Active");
-        };
+        await fetch(CLOUD_API_URL, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            predictions,
+            officialScore,
+            updatedAt: Date.now()
+          })
+        });
       } catch (err) {
-        console.warn("EventSource setup error:", err);
+        // Kept in localStorage if network fails
       }
     }
 
-    async function manualSyncRefresh() {
-      setSyncStatus(true, "🔄 Syncing...");
-      await fetchGlobalState();
-      showToast("Board synced with global cloud!", "🟢");
-    }
-
-    // ============================================================================
-    // 5. HYPE TIERS & SLIDER INTERACTIONS
-    // ============================================================================
     function getHypeTier(total) {
       if (total < 1050) {
-        return {
-          label: "💀 Generational Hater",
-          desc: "Zero faith. Praying on Omar's downfall 💀",
-          badgeClass: "bg-rose-500/20 text-rose-300 border-rose-500/30"
-        };
+        return { label: "Low Guess", desc: "Predicting a tough exam.", badgeClass: "bg-rose-500/20 text-rose-300 border-rose-500/30" };
       } else if (total < 1250) {
-        return {
-          label: "👀 Playing it Safe",
-          desc: "Lowkey cautious prediction.",
-          badgeClass: "bg-amber-500/20 text-amber-300 border-amber-500/30"
-        };
+        return { label: "Playing it Safe", desc: "Cautious prediction.", badgeClass: "bg-amber-500/20 text-amber-300 border-amber-500/30" };
       } else if (total < 1400) {
-        return {
-          label: "🤝 Solid Believer",
-          desc: "Respectable score—you got faith in Omar!",
-          badgeClass: "bg-sky-500/20 text-sky-300 border-sky-500/30"
-        };
+        return { label: "Solid Believer", desc: "Respectable score—you got faith in Omar!", badgeClass: "bg-sky-500/20 text-sky-300 border-sky-500/30" };
       } else if (total < 1520) {
-        return {
-          label: "🔥 Academic Weapon",
-          desc: "High-key locked in. Big score incoming!",
-          badgeClass: "bg-indigo-500/20 text-indigo-300 border-indigo-500/30"
-        };
+        return { label: "High Confidence", desc: "Locked in. Big score incoming!", badgeClass: "bg-indigo-500/20 text-indigo-300 border-indigo-500/30" };
       } else {
-        return {
-          label: "🐐 MIT Bound Glazer",
-          desc: "Maximum glaze! 99th percentile faith!",
-          badgeClass: "bg-emerald-500/20 text-emerald-300 border-emerald-500/30"
-        };
+        return { label: "Top Tier Guess", desc: "99th percentile faith!", badgeClass: "bg-emerald-500/20 text-emerald-300 border-emerald-500/30" };
       }
     }
 
@@ -695,7 +418,7 @@
       const tier = getHypeTier(total);
       const badge = document.getElementById("hypeBadge");
       badge.textContent = tier.label;
-      badge.className = `text-xs font-bold px-3 py-1.5 rounded-full border shrink-0 ${tier.badgeClass}`;
+      badge.className = `text-xs font-bold px-3 py-1.5 rounded-full border ${tier.badgeClass}`;
       document.getElementById("hypeDescription").textContent = tier.desc;
     }
 
@@ -708,19 +431,16 @@
       updateSliders();
     }
 
-    // ============================================================================
-    // 6. SUBMIT PREDICTION & 1-PREDICTION-PER-PERSON ENFORCEMENT
-    // ============================================================================
+    function getMyExistingPrediction() {
+      return predictions.find(p => p.deviceToken === deviceToken) || null;
+    }
+
     async function submitPrediction(e) {
       e.preventDefault();
+      const dupErr = document.getElementById("duplicateNameError");
+      dupErr.classList.add("hidden");
 
-      // Pull latest cloud state first so we don't overwrite someone else's new guess
-      await fetchGlobalState();
-
-      // Check 1: Does this device already have a prediction?
-      const existingByDevice = appState.predictions.find((p) => p.deviceId === myDeviceId);
-      if (existingByDevice) {
-        showToast("You already locked in a guess! Delete your first guess to submit a new one.", "⚠️");
+      if (getMyExistingPrediction()) {
         renderBoard();
         return;
       }
@@ -732,12 +452,9 @@
 
       if (!name) return;
 
-      // Check 2: Did someone already submit under this exact name?
-      const existingByName = appState.predictions.find(
-        (p) => p.name.trim().toLowerCase() === name.toLowerCase()
-      );
-      if (existingByName) {
-        showToast(`"${name}" already has a locked-in prediction! Only 1 prediction per person.`, "🚫");
+      const nameExists = predictions.some(p => p.name.toLowerCase() === name.toLowerCase());
+      if (nameExists) {
+        dupErr.classList.remove("hidden");
         return;
       }
 
@@ -746,21 +463,17 @@
       const total = rw + math;
 
       const entry = {
-        id: "pred_" + Date.now().toString(36) + "_" + Math.random().toString(36).substring(2, 7),
-        deviceId: myDeviceId,
+        id: "pred_" + Date.now() + "_" + Math.random().toString(36).substring(2, 6),
+        deviceToken,
         name,
         note,
         rw,
         math,
         total,
-        createdAt: Date.now(),
         timestamp: new Date().toLocaleDateString("en-US", { month: "short", day: "numeric" })
       };
 
-      appState.predictions.unshift(entry);
-      appState.version = (Number(appState.version) || 0) + 1;
-      appState.updatedAt = Date.now();
-
+      predictions.unshift(entry);
       nameInput.value = "";
       noteInput.value = "";
 
@@ -768,159 +481,17 @@
         confetti({ particleCount: 75, spread: 65, origin: { y: 0.7 } });
       }
 
-      showToast(`Locked in ${name}'s prediction of ${total}!`, "🚀");
-      await pushGlobalState();
+      await pushCloudState();
     }
 
-    // Friend deletes their OWN prediction so they can guess again (No PIN required)
     async function deleteMyOwnPrediction() {
-      await fetchGlobalState();
-      const myEntry = appState.predictions.find((p) => p.deviceId === myDeviceId);
-      if (!myEntry) {
-        renderBoard();
-        return;
-      }
-
-      // Pre-fill their previous name & sliders so they can easily adjust & re-submit
-      document.getElementById("friendNameInput").value = myEntry.name || "";
-      document.getElementById("friendNoteInput").value = myEntry.note || "";
-      document.getElementById("rwSlider").value = myEntry.rw || 670;
-      document.getElementById("mathSlider").value = myEntry.math || 680;
-      updateSliders();
-
-      appState.predictions = appState.predictions.filter((p) => p.deviceId !== myDeviceId);
-      appState.version = (Number(appState.version) || 0) + 1;
-      appState.updatedAt = Date.now();
-
-      showToast("Your previous guess was removed. You can now submit a new prediction!", "🔄");
-      await pushGlobalState();
+      const mine = getMyExistingPrediction();
+      if (!mine) return;
+      predictions = predictions.filter(p => p.id !== mine.id);
+      await pushCloudState();
     }
 
-    // ============================================================================
-    // 7. OMAR'S PIN-PROTECTED MODERATION & SCORE REVEAL
-    // ============================================================================
-    function requestDeletePrediction(id) {
-      const target = appState.predictions.find((p) => p.id === id);
-      if (!target) return;
-
-      // If it's the user's own prediction on this device, allow immediate self-delete
-      if (target.deviceId && target.deviceId === myDeviceId) {
-        deleteMyOwnPrediction();
-        return;
-      }
-
-      // If Omar is already unlocked in Owner Mode, delete immediately
-      if (isAdminUnlocked) {
-        deletePredictionByIdGlobal(id);
-        return;
-      }
-
-      // Otherwise prompt for Omar's secret PIN to delete this specific prediction
-      openPinModal({ type: "deleteSingle", targetId: id, targetName: target.name });
-    }
-
-    async function deletePredictionByIdGlobal(id) {
-      if (!isAdminUnlocked) return;
-      await fetchGlobalState();
-      const target = appState.predictions.find((p) => p.id === id);
-      appState.predictions = appState.predictions.filter((p) => p.id !== id);
-      appState.version = (Number(appState.version) || 0) + 1;
-      appState.updatedAt = Date.now();
-
-      showToast(target ? `Removed ${target.name}'s prediction.` : "Prediction removed.", "🗑️");
-      await pushGlobalState();
-    }
-
-    async function clearAllPredictions() {
-      if (!isAdminUnlocked) {
-        openPinModal({ type: "clear" });
-        return;
-      }
-      await fetchGlobalState();
-      appState.predictions = [];
-      appState.version = (Number(appState.version) || 0) + 1;
-      appState.updatedAt = Date.now();
-
-      showToast("All predictions cleared globally!", "🧹");
-      await pushGlobalState();
-    }
-
-    async function publishOfficialScore() {
-      if (!isAdminUnlocked) return;
-      await fetchGlobalState();
-      const rw = Math.max(200, Math.min(800, parseInt(document.getElementById("officialRWInput").value, 10) || 700));
-      const math = Math.max(200, Math.min(800, parseInt(document.getElementById("officialMathInput").value, 10) || 700));
-      appState.officialScore = { rw, math, total: rw + math };
-      appState.version = (Number(appState.version) || 0) + 1;
-      appState.updatedAt = Date.now();
-
-      if (typeof confetti === "function") {
-        confetti({ particleCount: 120, spread: 80, origin: { y: 0.6 } });
-      }
-      showToast(`Official Score (${rw + math}) revealed globally!`, "🏆");
-      await pushGlobalState();
-    }
-
-    async function hideOfficialScore() {
-      if (!isAdminUnlocked) return;
-      await fetchGlobalState();
-      appState.officialScore = null;
-      appState.version = (Number(appState.version) || 0) + 1;
-      appState.updatedAt = Date.now();
-
-      showToast("Official score hidden.", "🔒");
-      await pushGlobalState();
-    }
-
-    // ============================================================================
-    // 8. RENDER BOARD, STATS, AND LOCKED-IN STATUS
-    // ============================================================================
     function renderBoard() {
-      const predictions = appState.predictions || [];
-      const officialScore = appState.officialScore || null;
-
-      // 1. Check if current device has an active prediction
-      const myPrediction = predictions.find((p) => p.deviceId && p.deviceId === myDeviceId);
-      const pickerFormView = document.getElementById("pickerFormView");
-      const lockedInView = document.getElementById("lockedInView");
-
-      if (myPrediction) {
-        pickerFormView.classList.add("hidden");
-        lockedInView.classList.remove("hidden");
-
-        const myTier = getHypeTier(myPrediction.total);
-        document.getElementById("myLockedName").textContent = myPrediction.name;
-        document.getElementById("myLockedTotal").textContent = myPrediction.total;
-        document.getElementById("myLockedRW").textContent = myPrediction.rw;
-        document.getElementById("myLockedMath").textContent = myPrediction.math;
-
-        const badgeEl = document.getElementById("myLockedTierBadge");
-        badgeEl.textContent = myTier.label;
-        badgeEl.className = `text-xs font-bold px-3 py-1.5 rounded-full border ${myTier.badgeClass}`;
-
-        const noteEl = document.getElementById("myLockedNote");
-        if (myPrediction.note) {
-          noteEl.textContent = `"${myPrediction.note}"`;
-          noteEl.classList.remove("hidden");
-        } else {
-          noteEl.classList.add("hidden");
-        }
-      } else {
-        pickerFormView.classList.remove("hidden");
-        lockedInView.classList.add("hidden");
-      }
-
-      // 2. Official Score Reveal Banner
-      const banner = document.getElementById("officialRevealBanner");
-      if (officialScore) {
-        banner.classList.remove("hidden");
-        document.getElementById("officialTotalDisplay").textContent = officialScore.total;
-        document.getElementById("officialBreakdownDisplay").textContent = `R&W: ${officialScore.rw} • Math: ${officialScore.math}`;
-      } else {
-        banner.classList.add("hidden");
-      }
-
-      // 3. Squad Consensus Stats
       const countEl = document.getElementById("totalGuessesCount");
       const avgTotalEl = document.getElementById("avgTotalDisplay");
       const avgSubEl = document.getElementById("avgSubDisplay");
@@ -931,6 +502,32 @@
       const haterName = document.getElementById("haterName");
       const haterScore = document.getElementById("haterScore");
       const listEl = document.getElementById("predictionsList");
+
+      // Check 1-prediction-per-person lock state
+      const myGuess = getMyExistingPrediction();
+      const lockedCard = document.getElementById("lockedUserCard");
+      const pickerForm = document.getElementById("pickerFormContainer");
+
+      if (myGuess) {
+        lockedCard.classList.remove("hidden");
+        pickerForm.classList.add("hidden");
+        document.getElementById("myLockedName").textContent = `${myGuess.name}'s Locked Guess`;
+        document.getElementById("myLockedTotal").textContent = myGuess.total;
+        document.getElementById("myLockedSub").textContent = `R&W: ${myGuess.rw} • Math: ${myGuess.math}`;
+      } else {
+        lockedCard.classList.add("hidden");
+        pickerForm.classList.remove("hidden");
+      }
+
+      // Official score banner
+      const banner = document.getElementById("officialRevealBanner");
+      if (officialScore) {
+        banner.classList.remove("hidden");
+        document.getElementById("officialTotalDisplay").textContent = officialScore.total;
+        document.getElementById("officialBreakdownDisplay").textContent = `R&W: ${officialScore.rw} • Math: ${officialScore.math}`;
+      } else {
+        banner.classList.add("hidden");
+      }
 
       countEl.textContent = `${predictions.length} ${predictions.length === 1 ? "Guess" : "Guesses"}`;
 
@@ -984,73 +581,63 @@
         const tier = getHypeTier(item.total);
         const diff = officialScore ? Math.abs(item.total - officialScore.total) : null;
         const isWinner = officialScore && idx === 0;
-        const isMine = item.deviceId && item.deviceId === myDeviceId;
+        const isMine = item.deviceToken === deviceToken;
 
         return `
-          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 rounded-xl bg-slate-950/70 border ${
-            isWinner
-              ? "border-amber-400/60 bg-amber-500/5"
-              : isMine
-              ? "border-sky-500/40 bg-sky-500/5"
-              : "border-slate-800/80"
-          }">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 rounded-xl bg-slate-950/70 border ${isWinner ? 'border-amber-400/60 bg-amber-500/5' : isMine ? 'border-sky-500/40' : 'border-slate-800/80'}">
             <div class="space-y-1">
               <div class="flex items-center gap-2 flex-wrap">
-                ${isWinner ? '<span class="text-xs font-bold px-2 py-0.5 rounded bg-amber-400 text-slate-950">👑 Closest Guess</span>' : ""}
+                ${isWinner ? '<span class="text-xs font-bold px-2 py-0.5 rounded bg-amber-400 text-slate-950">Closest Guess</span>' : ''}
                 <span class="font-bold text-white text-base">${escapeHtml(item.name)}</span>
-                ${isMine ? '<span class="text-[10px] font-bold uppercase px-2 py-0.5 rounded bg-sky-500/20 text-sky-300 border border-sky-500/30">You</span>' : ""}
+                ${isMine ? '<span class="text-[10px] font-bold px-2 py-0.5 rounded bg-sky-500/20 text-sky-300 border border-sky-500/30">You</span>' : ''}
                 <span class="text-[11px] font-semibold px-2.5 py-0.5 rounded-full border ${tier.badgeClass}">${tier.label}</span>
-                <span class="text-xs text-slate-500">${escapeHtml(item.timestamp || "")}</span>
+                <span class="text-xs text-slate-500">${item.timestamp}</span>
               </div>
-              ${item.note ? `<p class="text-xs text-slate-300 italic">"${escapeHtml(item.note)}"</p>` : ""}
+              ${item.note ? `<p class="text-xs text-slate-300 italic">"${escapeHtml(item.note)}"</p>` : ''}
             </div>
 
-            <div class="flex items-center justify-between sm:justify-end gap-3 border-t sm:border-t-0 border-slate-800/80 pt-2 sm:pt-0">
+            <div class="flex items-center justify-between sm:justify-end gap-4 border-t sm:border-t-0 border-slate-800/80 pt-2 sm:pt-0">
               <div class="text-xs text-slate-400">
-                <span>R&amp;W: <strong class="text-sky-400">${item.rw}</strong></span>
+                <span>R&W: <strong class="text-sky-400">${item.rw}</strong></span>
                 <span class="mx-1.5">•</span>
                 <span>Math: <strong class="text-indigo-400">${item.math}</strong></span>
-                ${diff !== null ? `<div class="text-[11px] text-amber-300 font-semibold mt-0.5">Off by ${diff} pts</div>` : ""}
+                ${diff !== null ? `<div class="text-[11px] text-amber-300 font-semibold mt-0.5">Off by ${diff} pts</div>` : ''}
               </div>
               <div class="font-display text-2xl font-extrabold text-white">${item.total}</div>
-              ${
-                isMine
-                  ? `<button type="button" onclick="deleteMyOwnPrediction()" title="Delete my prediction and guess again" class="text-xs font-semibold px-2.5 py-1.5 rounded-lg bg-rose-500/15 hover:bg-rose-500/30 text-rose-300 border border-rose-500/30 transition cursor-pointer">
-                      🗑️ Delete My Guess
-                    </button>`
-                  : `<button type="button" onclick="requestDeletePrediction('${item.id}')" title="Delete this prediction (Owner PIN required)" class="text-xs px-2.5 py-1.5 rounded-lg ${
-                      isAdminUnlocked
-                        ? "bg-rose-500/20 text-rose-300 hover:bg-rose-500/30 border border-rose-500/30"
-                        : "bg-slate-900 text-slate-500 hover:text-rose-300 hover:bg-slate-800 border border-slate-800"
-                    } transition cursor-pointer">
-                      🗑️
-                    </button>`
-              }
+              ${isMine ? `
+                <button onclick="deleteMyOwnPrediction()" title="Delete my guess & try again" class="text-xs px-2.5 py-1 rounded-lg bg-rose-500/20 text-rose-300 hover:bg-rose-500/30 border border-rose-500/30 font-semibold">
+                  Change
+                </button>
+              ` : `
+                <button onclick="requestAdminDeleteSingle('${item.id}')" title="Owner Delete" class="text-xs px-2.5 py-1 rounded-lg bg-slate-800/80 text-slate-400 hover:text-rose-300 hover:bg-rose-500/20 transition font-semibold">
+                  Delete
+                </button>
+              `}
             </div>
           </div>
         `;
       }).join("");
     }
 
-    // ============================================================================
-    // 9. PIN MODAL HANDLERS
-    // ============================================================================
-    function openPinModal(actionObj) {
+    function requestAdminDeleteSingle(id) {
       if (isAdminUnlocked) {
-        executePinAction(actionObj);
+        deleteSinglePrediction(id);
+      } else {
+        pendingDeleteId = id;
+        openPinModal("deleteSingle");
+      }
+    }
+
+    function openPinModal(actionType) {
+      if (isAdminUnlocked) {
+        if (actionType === "clear") {
+          clearAllPredictions();
+        } else {
+          document.getElementById("adminPanel").classList.remove("hidden");
+        }
         return;
       }
-
-      pendingPinAction = actionObj || { type: "admin" };
-      const subtitle = document.getElementById("pinModalSubtitle");
-      if (pendingPinAction.type === "deleteSingle" && pendingPinAction.targetName) {
-        subtitle.textContent = `Enter Omar's private PIN to remove ${pendingPinAction.targetName}'s prediction.`;
-      } else if (pendingPinAction.type === "clear") {
-        subtitle.textContent = "Enter Omar's private PIN to clear all predictions from the global board.";
-      } else {
-        subtitle.textContent = "Enter your private 4-digit PIN to unlock owner controls.";
-      }
-
+      pendingPinAction = actionType;
       document.getElementById("pinInput").value = "";
       document.getElementById("pinError").classList.add("hidden");
       const modal = document.getElementById("pinModal");
@@ -1065,26 +652,20 @@
       modal.classList.remove("flex");
     }
 
-    function executePinAction(actionObj) {
-      document.getElementById("adminPanel").classList.remove("hidden");
-      document.getElementById("adminToggleBtn").textContent = "🔓 Owner Unlocked";
-      if (!actionObj) return;
-
-      if (actionObj.type === "clear") {
-        clearAllPredictions();
-      } else if (actionObj.type === "deleteSingle" && actionObj.targetId) {
-        deletePredictionByIdGlobal(actionObj.targetId);
-      }
-      renderBoard();
-    }
-
-    function handlePinSubmit(e) {
+    async function handlePinSubmit(e) {
       e.preventDefault();
       const val = document.getElementById("pinInput").value;
       if (verifySecretPin(val)) {
         isAdminUnlocked = true;
         closePinModal();
-        executePinAction(pendingPinAction);
+        document.getElementById("adminPanel").classList.remove("hidden");
+        if (pendingPinAction === "clear") {
+          await clearAllPredictions();
+        } else if (pendingPinAction === "deleteSingle" && pendingDeleteId) {
+          await deleteSinglePrediction(pendingDeleteId);
+          pendingDeleteId = null;
+        }
+        renderBoard();
       } else {
         document.getElementById("pinError").classList.remove("hidden");
       }
@@ -1093,32 +674,48 @@
     function lockAdmin() {
       isAdminUnlocked = false;
       document.getElementById("adminPanel").classList.add("hidden");
-      document.getElementById("adminToggleBtn").textContent = "🔒 Owner Lock";
       renderBoard();
     }
 
+    async function clearAllPredictions() {
+      if (!isAdminUnlocked) return;
+      predictions = [];
+      await pushCloudState();
+    }
+
+    async function deleteSinglePrediction(id) {
+      if (!isAdminUnlocked) return;
+      predictions = predictions.filter(p => p.id !== id);
+      await pushCloudState();
+    }
+
+    async function publishOfficialScore() {
+      if (!isAdminUnlocked) return;
+      const rw = Math.max(200, Math.min(800, parseInt(document.getElementById("officialRWInput").value, 10) || 700));
+      const math = Math.max(200, Math.min(800, parseInt(document.getElementById("officialMathInput").value, 10) || 700));
+      officialScore = { rw, math, total: rw + math };
+      if (typeof confetti === "function") {
+        confetti({ particleCount: 120, spread: 80, origin: { y: 0.6 } });
+      }
+      await pushCloudState();
+    }
+
+    async function hideOfficialScore() {
+      if (!isAdminUnlocked) return;
+      officialScore = null;
+      await pushCloudState();
+    }
+
     function escapeHtml(str) {
-      return String(str).replace(/[&<>"']/g, (s) => ({
-        "&": "&amp;",
-        "<": "&lt;",
-        ">": "&gt;",
-        '"': "&quot;",
-        "'": "&#39;"
+      return String(str).replace(/[&<>"']/g, s => ({
+        "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
       }[s]));
     }
 
-    // ============================================================================
-    // 10. INITIALIZE ON PAGE LOAD
-    // ============================================================================
     updateSliders();
     renderBoard();
-    fetchGlobalState();
-    subscribeLiveStream();
-
-    // Periodic background sync every 8 seconds so all devices stay up to date
-    setInterval(() => {
-      fetchGlobalState();
-    }, 8000);
+    fetchCloudState();
+    setInterval(fetchCloudState, 5000);
   </script>
 </body>
 </html>
