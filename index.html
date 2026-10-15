@@ -6,11 +6,11 @@
   <title>Guess Omar's SAT Score!</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-  <!-- Firebase SDKs via Script Tags -->
+  <!-- Firebase Realtime Database SDKs via Script Tags -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-app.js";
-    import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-firestore.js";
-    window.FirebaseModules = { initializeApp, getFirestore, doc, setDoc, onSnapshot };
+    import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-database.js";
+    window.FirebaseRTDB = { initializeApp, getDatabase, ref, set, onValue };
   </script>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
@@ -56,7 +56,7 @@
         <div class="flex items-center gap-2">
           <h1 class="font-display font-bold text-base sm:text-lg tracking-tight text-white">Guess Omar's SAT</h1>
           <span id="syncStatusBadge" class="inline-flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-300 border border-emerald-500/30">
-            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> Firebase Live Sync
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> RTDB Live Sync
           </span>
         </div>
         <p class="text-[11px] text-slate-400">Official Prediction Pool • 1 Guess Per Person</p>
@@ -285,7 +285,7 @@
       <div class="flex items-center justify-between gap-2">
         <div>
           <h2 class="font-display text-lg sm:text-xl font-bold text-white">Friends' Predictions Board</h2>
-          <p class="text-xs text-slate-400">Synced globally across all devices via Firebase</p>
+          <p class="text-xs text-slate-400">Synced globally across all devices via Firebase RTDB</p>
         </div>
         <button onclick="openPinModal('clear')" class="text-xs font-semibold px-3 py-1.5 rounded-lg bg-slate-800/80 hover:bg-slate-800 text-slate-400 hover:text-slate-200 border border-slate-700/70 transition">
           Reset Board
@@ -317,20 +317,21 @@
     </div>
   </div>
 
-  <!-- Firebase Real-Time Sync & App Logic Script -->
+  <!-- Firebase Realtime Database Sync & App Logic Script -->
   <script type="module">
     const firebaseConfig = {
       apiKey: "AIzaSyCit-Si1mOhCPDZYbBouoATMGsdglPaLXw",
       authDomain: "omar-sat.firebaseapp.com",
+      databaseURL: "https://omar-sat-default-rtdb.europe-west1.firebasedatabase.app",
       projectId: "omar-sat",
       storageBucket: "omar-sat.firebasestorage.app",
       messagingSenderId: "1096084570863",
       appId: "1:1096084570863:web:37a820fd2cf7840471511a"
     };
 
-    const app = window.FirebaseModules.initializeApp(firebaseConfig);
-    const db = window.FirebaseModules.getFirestore(app);
-    const docRef = window.FirebaseModules.doc(db, "sat_pool", "global_predictions_data");
+    const app = window.FirebaseRTDB.initializeApp(firebaseConfig);
+    const db = window.FirebaseRTDB.getDatabase(app);
+    const dbRef = window.FirebaseRTDB.ref(db, "sat_pool/global_predictions_data");
 
     function verifySecretPin(input) {
       const clean = (input || "").trim();
@@ -342,9 +343,9 @@
     }
     window.verifySecretPin = verifySecretPin;
 
-    const STORAGE_KEY = "omar_sat_predictions_v7";
-    const OFFICIAL_KEY = "omar_sat_official_v7";
-    const MY_DEVICE_ID_KEY = "omar_sat_device_token_v7";
+    const STORAGE_KEY = "omar_sat_predictions_v8";
+    const OFFICIAL_KEY = "omar_sat_official_v8";
+    const MY_DEVICE_ID_KEY = "omar_sat_device_token_v8";
 
     let deviceToken = localStorage.getItem(MY_DEVICE_ID_KEY);
     if (!deviceToken) {
@@ -358,17 +359,15 @@
     window.pendingPinAction = null;
     window.pendingDeleteId = null;
 
-    // Real-time Firestore sync listener across all devices and networks
-    window.FirebaseModules.onSnapshot(docRef, (docSnap) => {
-      if (docSnap.exists()) {
-        const data = docSnap.data();
-        if (data && Array.isArray(data.predictions)) {
-          window.predictions = data.predictions;
-          window.officialScore = data.officialScore || null;
-          localStorage.setItem(STORAGE_KEY, JSON.stringify(window.predictions));
-          localStorage.setItem(OFFICIAL_KEY, JSON.stringify(window.officialScore));
-          window.renderBoard();
-        }
+    // Real-time listener across all devices via Firebase Realtime Database
+    window.FirebaseRTDB.onValue(dbRef, (snapshot) => {
+      const data = snapshot.val();
+      if (data && Array.isArray(data.predictions)) {
+        window.predictions = data.predictions;
+        window.officialScore = data.officialScore || null;
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(window.predictions));
+        localStorage.setItem(OFFICIAL_KEY, JSON.stringify(window.officialScore));
+        window.renderBoard();
       }
     });
 
@@ -378,13 +377,13 @@
       window.renderBoard();
 
       try {
-        await window.FirebaseModules.setDoc(docRef, {
+        await window.FirebaseRTDB.set(dbRef, {
           predictions: window.predictions,
           officialScore: window.officialScore,
           updatedAt: Date.now()
         });
       } catch (err) {
-        console.error("Firebase save error:", err);
+        console.error("RTDB save error:", err);
       }
     };
 
